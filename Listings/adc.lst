@@ -1,0 +1,71 @@
+C51 COMPILER V9.60.7.0   ADC                                                               01/10/2025 23:10:50 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE ADC
+OBJECT MODULE PLACED IN .\Output\adc.obj
+COMPILER INVOKED BY: D:\APP\Keil_STM32\C51\BIN\C51.EXE Src\adc.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\Inc;D:\APP\Keil
+                    -_v5\C51\INC) DEBUG OBJECTEXTEND PRINT(.\Listings\adc.lst) OBJECT(.\Output\adc.obj)
+
+line level    source
+
+   1          #include "STC15W4Kxx.h"
+   2          #include "adc.h"
+   3          #include "delay.h"
+   4          #include "stdint.h"
+   5          
+   6          
+   7          #define ADC_POWER   0x80            //ADC电源控制位
+   8          #define ADC_SPEED0  0x20            //360个时钟
+   9          #define ADC_START   0x08            //ADC起始控制位
+  10          #define ADC_FLAG    0x10            //ADC完成标志
+  11           /**************************************************************************
+  12          功能描述：ADC口初始化
+  13          入口参数：无
+  14          返回值：无
+  15           *************************************************************************/
+  16          void ADCInit(void)
+  17          {       
+  18   1          P1ASF = 0x27;                   
+  19   1          ADC_RES = 0;                    
+  20   1          ADC_RESL=0;
+  21   1          ADC_CONTR = ADC_POWER | ADC_SPEED0;
+  22   1      }
+  23          
+  24          /**************************************
+  25          功能描述：ADC口检测AD转换值函数
+  26          入口参数：无
+  27          返回值：ADC 12位数据
+  28          ***************************************/
+  29          uint16_t Get_ADC12bitResult(uint8_t channel_x)  
+  30          {
+  31   1          uint16_t adc_value = 0;
+  32   1      
+  33   1          ADC_CONTR |= ADC_POWER | ADC_SPEED0 | ADC_START | (channel_x-1) ; // 启动ADC转换
+  34   1          while (!(ADC_CONTR & ADC_FLAG));  // 等待ADC转换完成
+  35   1          ADC_CONTR &= ~ADC_FLAG; 
+  36   1          
+  37   1          adc_value = ADC_RESL;
+  38   1          adc_value |= (ADC_RES << 2);
+  39   1      
+  40   1          return adc_value;
+  41   1        
+  42   1      }
+  43          
+  44          
+  45          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     50    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V9.60.7.0   ADC                                                               01/10/2025 23:10:50 PAGE 2   
+
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

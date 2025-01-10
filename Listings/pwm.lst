@@ -1,0 +1,99 @@
+C51 COMPILER V9.60.7.0   PWM                                                               01/10/2025 23:10:50 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE PWM
+OBJECT MODULE PLACED IN .\Output\pwm.obj
+COMPILER INVOKED BY: D:\APP\Keil_STM32\C51\BIN\C51.EXE Src\pwm.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\Inc;D:\APP\Keil
+                    -_v5\C51\INC) DEBUG OBJECTEXTEND PRINT(.\Listings\pwm.lst) OBJECT(.\Output\pwm.obj)
+
+line level    source
+
+   1          #include "STC15W4Kxx.h"
+   2          #include "pwm.h"
+   3          #include "timer.h"
+   4          
+   5          void PWM5Init(void)
+   6          {
+   7   1          PWMCFG = 0x08;              //配置PWM5的输出初始电平为高电平
+   8   1          PWMCKS = 0x0b;              //选择PWM的时钟为Fosc/12
+   9   1          
+  10   1          PWMC = CYCLE;               //设置PWM周期 PWMCH PWMCL
+  11   1          
+  12   1          PWM5T1 = 0;                 //设置PWM5第1次反转的PWM计数
+  13   1          PWM5T2 = 10;                //设置PWM5第2次反转的PWM计数 占空比为(PWM5T2-PWM5T1)/PWMC
+  14   1                               
+  15   1          PWM5CR = 0x00;              //选择PWM5输出到P2.3,不使能PWM5中断          
+  16   1      }
+  17          
+  18          void PWMSet(unsigned int dat)
+  19          {
+  20   1          PWMStart();
+  21   1          PWM5T2 = dat;
+  22   1      }
+  23          
+  24          void PWMStart(void)
+  25          {
+  26   1          PWMCR = 0X88;
+  27   1      }
+  28          
+  29          void PWMStop(void)
+  30          {
+  31   1          
+  32   1          PWMCR = 0X00;
+  33   1          P23 = 1;
+  34   1      }
+  35          
+  36          void wind_crl(unsigned char wind_num)
+  37          {
+  38   1          if(wind_bit == 1)       
+  39   1          {
+  40   2              switch(wind_num)
+  41   2              {
+  42   3                  case 0:
+  43   3                      PWMStop();
+  44   3                      break;
+  45   3                  
+  46   3                  case 1:
+  47   3                      PWMSet(2000);
+  48   3                      break;
+  49   3                  
+  50   3                  case 2:
+  51   3                      PWMSet(2400);
+  52   3                      break;
+  53   3                  
+  54   3                  case 3:
+C51 COMPILER V9.60.7.0   PWM                                                               01/10/2025 23:10:50 PAGE 2   
+
+  55   3                      PWMSet(2800);
+  56   3                      break;
+  57   3                  
+  58   3                  case 4:
+  59   3                      PWMSet(3200);
+  60   3                      break;
+  61   3                  
+  62   3                  case 5:
+  63   3                      PWMSet(3600);
+  64   3                      break;
+  65   3                  
+  66   3                  case 6:
+  67   3                      PWMSet(4000);
+  68   3                      break;
+  69   3              }
+  70   2              
+  71   2          }
+  72   1          
+  73   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    149    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----       2
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "adc.h": "c",
+        "ntc.h": "c",
+        "uart.h": "c",
+        "delay.h": "c",
+        "timer.h": "c",
+        "gpio.h": "c"
+    }
+}

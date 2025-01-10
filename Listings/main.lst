@@ -1,0 +1,121 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              01/10/2025 23:10:50 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Output\main.obj
+COMPILER INVOKED BY: D:\APP\Keil_STM32\C51\BIN\C51.EXE User\main.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\Inc;D:\APP\Ke
+                    -il_v5\C51\INC) DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) OBJECT(.\Output\main.obj)
+
+line level    source
+
+   1          #include "STC15W4Kxx.h"
+   2          #include <stdio.h> 
+   3          #include "gpio.h"
+   4          #include "delay.h"
+   5          #include "adc.h"
+   6          #include "uart.h"
+   7          #include "ntc.h"
+   8          #include "timer.h"
+   9          #include "screen.h"
+  10          #include "stdint.h"
+  11          #include "pwm.h"
+  12          #include "key.h"
+  13          #include "eeprom.h"
+  14          #include "sync.h"
+  15          
+  16          void main()
+  17          {
+  18   1          uint8_t x;
+  19   1          uint8_t y;
+  20   1          P_SW2 |= 0x80;
+  21   1          
+  22   1          GPIOInit();
+  23   1          ADCInit();
+  24   1          Uart1Init();
+  25   1          Tim0Init();
+  26   1          Tim1Init();
+  27   1          Tim3Init();
+  28   1          IT0 = 1;   //œ¬Ωµ—ÿ¥•∑¢π˝¡„ºÏ≤‚–≈∫≈
+  29   1          EX0 = 1;
+  30   1          EA = 1;
+  31   1          P42 = 0;
+  32   1          P23 = 0;
+  33   1          P54 = 1;
+  34   1          PWM5Init(); 
+  35   1          P05 = 0;
+  36   1          PWMStop();
+  37   1            
+  38   1          printf("======== code start ========\r\n");  
+  39   1      
+  40   1          x = ISP_read(0x0000);
+  41   1          if((x!=1)&&(x!=2)&&(x!=3)&&(x!=4)&&(x!=5))
+  42   1          {
+  43   2              mode_num = 1;
+  44   2              channel_num = 1;
+  45   2              sync_bit = 1;
+  46   2              wind_num = 3;
+  47   2              power_num = 50;
+  48   2              temp_num = 100;//∂¡»°channel_num°¢sync_bit°¢wind_num°¢power_num°¢temp_num
+  49   2              eeprom_mode_save();
+  50   2              for(y = 1;y<6;y++) 
+  51   2              
+  52   2              {
+  53   3                  mode_num = y;
+  54   3                  eeprom_data_write();
+C51 COMPILER V9.60.7.0   MAIN                                                              01/10/2025 23:10:50 PAGE 2   
+
+  55   3               }
+  56   2          }
+  57   1          
+  58   1          restart:
+  59   1          delay_ms(1000);
+  60   1          
+  61   1          while(on_off)
+  62   1          {
+  63   2              on_off = power_on();
+  64   2          }  
+  65   1          P20 = 0; 
+  66   1      
+  67   1          led_init();    
+  68   1          lcd_init();  
+  69   1          ISP_data_init();
+  70   1          percentage_dis(DIS_ON);
+  71   1          if(power_bit==1)
+  72   1          {
+  73   2              sun_dis(DIS_ON);
+  74   2          }
+  75   1          buzzer=buzzer_bit=0;
+  76   1          
+  77   1          while(1)
+  78   1          {
+  79   2              button_scan();
+  80   2              fan_rotate();
+  81   2              external_24V_listen();
+  82   2              temp_listen();
+  83   2              sync_fan_delay_listen();
+  84   2              power_off();
+  85   2              if(on_off == 1)
+  86   2              {
+  87   3                  buzzer=buzzer_bit=0;
+  88   3                  P24 = P25 = P26 = 1;
+  89   3                  P43 = P44 = 1;
+  90   3                  P20 = 1;
+  91   3                  goto restart;   
+  92   3              }
+  93   2              
+  94   2          }
+  95   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    233    ----
+   CONSTANT SIZE    =     31    ----
+   XDATA SIZE       =   ----       1
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
