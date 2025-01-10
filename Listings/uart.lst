@@ -1,0 +1,81 @@
+C51 COMPILER V9.60.7.0   UART                                                              01/10/2025 22:08:16 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE UART
+OBJECT MODULE PLACED IN .\Output\uart.obj
+COMPILER INVOKED BY: D:\APP\Keil_STM32\C51\BIN\C51.EXE Src\uart.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\Inc;D:\APP\Kei
+                    -l_v5\C51\INC) DEBUG OBJECTEXTEND PRINT(.\Listings\uart.lst) OBJECT(.\Output\uart.obj)
+
+line level    source
+
+   1          #include "STC15W4Kxx.h"
+   2          #include "uart.h"
+   3          #include "stdint.h"
+   4          #include "delay.h"
+   5          
+   6          bit busy_bit;
+   7          
+   8          void Uart1Init(void)    //115200bps@11.0592MHz
+   9          {
+  10   1              SCON = 0x50;            //8位数据,可变波特率
+  11   1              AUXR |= 0x01;           //串口1选择定时器2为波特率发生器
+  12   1              AUXR |= 0x04;           //定时器时钟1T模式
+  13   1              T2L = 0xE8;                     //设置定时初始值
+  14   1              T2H = 0xFF;                     //设置定时初始值
+  15   1              AUXR |= 0x10;           //定时器2开始计时
+  16   1          
+  17   1          ES = 1;
+  18   1      }
+  19          
+  20          void Uart1Isr() interrupt 4 
+  21          {   
+  22   1          if(TI == 1)
+  23   1          {
+  24   2              TI = 0;
+  25   2              busy_bit = 0;
+  26   2          }
+  27   1          
+  28   1          if(RI == 1)
+  29   1          {
+  30   2              RI = 0;
+  31   2          }
+  32   1      }
+  33          
+  34          void Uart1Sendbyte(uint8_t dat)
+  35          {
+  36   1          while(busy_bit);
+  37   1          busy_bit = 1;
+  38   1          SBUF = dat;
+  39   1      }
+  40          
+  41          void Uart1SendStr(uint8_t *sendstr)
+  42          {   
+  43   1          while(*sendstr)
+  44   1          {
+  45   2              Uart1Sendbyte(*sendstr++);
+  46   2          }
+  47   1      }
+  48          
+  49          char putchar(char c)  // 串口重定向需要添加头文件stdio.h
+  50          {
+  51   1          SBUF = c;
+  52   1          while(!TI);
+  53   1          TI = 0;
+  54   1          return c;
+C51 COMPILER V9.60.7.0   UART                                                              01/10/2025 22:08:16 PAGE 2   
+
+  55   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    101    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----       3
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
