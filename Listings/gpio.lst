@@ -1,0 +1,37 @@
+C51 COMPILER V9.60.7.0   GPIO                                                              01/10/2025 23:04:24 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE GPIO
+OBJECT MODULE PLACED IN .\Output\gpio.obj
+COMPILER INVOKED BY: D:\APP\Keil_STM32\C51\BIN\C51.EXE Src\gpio.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\Inc;D:\APP\Kei
+                    -l_v5\C51\INC) DEBUG OBJECTEXTEND PRINT(.\Listings\gpio.lst) OBJECT(.\Output\gpio.obj)
+
+line level    source
+
+   1          #include "STC15W4Kxx.h"
+   2          #include "gpio.h"
+   3          
+   4          void GPIOInit()
+   5          {
+   6   1          P0M0 = 0x20;    P0M1 = 0x00;        //P0.5为推挽
+   7   1          P1M0 = 0X80;    P1M1 = 0X00;        //P1.0 P1.1 P1.4为高阻输入
+   8   1          P2M0 = 0x7f;    P2M1 = 0x00;        //P2.0 2.3  2.4 2.5 2.6为推挽      
+   9   1          P3M0 = 0X00;    P3M1 = 0X00;       
+  10   1          P4M0 = 0x1c;    P4M1 = 0x00;        //P4.2 4.3 4.4为推挽      
+  11   1          P5M0 = 0X10;    P5M1 = 0X00;        //P5.4为推挽
+  12   1      }
+  13            
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     31    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

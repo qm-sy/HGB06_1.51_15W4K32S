@@ -1,0 +1,395 @@
+C51 COMPILER V9.60.7.0   SCREEN                                                            01/10/2025 23:04:24 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE SCREEN
+OBJECT MODULE PLACED IN .\Output\screen.obj
+COMPILER INVOKED BY: D:\APP\Keil_STM32\C51\BIN\C51.EXE Src\screen.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\Inc;D:\APP\K
+                    -eil_v5\C51\INC) DEBUG OBJECTEXTEND PRINT(.\Listings\screen.lst) OBJECT(.\Output\screen.obj)
+
+line level    source
+
+   1          #include "STC15W4Kxx.h"
+   2          #include "stdint.h"
+   3          #include "delay.h"
+   4          #include "intrins.h" 
+   5          #include "screen.h"
+   6          
+   7          uint8_t value_03 = 0;  //该地址的值
+   8          uint8_t value_06 = 0;
+   9          uint8_t value_07 = 0;
+  10          uint8_t value_0A = 0;
+  11          uint8_t value_0B = 0;
+  12          uint8_t value_0E = 0;
+  13          uint8_t value_0F = 0; 
+  14           
+  15          uint8_t addr_tab[7] = { 0xc3,0xc6,0xc7,0xca,0xcb,0xce,0xcf};
+  16          
+  17          uint8_t num_tab[10] = {0xF5,0x05,0xD3,0x97,0x27,0xB6,0xF6,0x15,0xF7,0xB7};
+  18                               /*  0    1    2    3    4    5    6    7    8    9  */
+  19          
+  20          void lcd_init()
+  21          {
+  22   1          TM1722_STB=1;            //端口配置初始化
+  23   1          TM1722_CLK=1;
+  24   1          TM1722_DIO=1;
+  25   1          TM1722_Write_Byte(0x00); //工作模式
+  26   1          TM1722_STB=1;
+  27   1          TM1722_Write_Byte(0x44);   //固定地址模式
+  28   1          TM1722_STB=1;
+  29   1          
+  30   1          lcd_clear();
+  31   1          
+  32   1          lcd_display();
+  33   1      }
+  34          
+  35          void lcd_clear()  //清显示缓存
+  36          {
+  37   1          uint8_t i;
+  38   1                       
+  39   1          for(i=0;i<7;i++)
+  40   1          {
+  41   2              TM1722_Write_Byte(addr_tab[i]);
+  42   2              TM1722_Write_Byte(0);
+  43   2              TM1722_STB=1;    
+  44   2          }
+  45   1      }
+  46          
+  47          void lcd_display()  //显示开
+  48          {
+  49   1          TM1722_Write_Byte(0x93); 
+  50   1          TM1722_STB=1;
+  51   1      }
+  52          
+  53          void lcd_write_val(uint8_t addr,uint8_t dat)
+  54          {
+C51 COMPILER V9.60.7.0   SCREEN                                                            01/10/2025 23:04:24 PAGE 2   
+
+  55   1          TM1722_Write_Byte(addr); 
+  56   1          TM1722_Write_Byte(dat); 
+  57   1          TM1722_STB=1;
+  58   1      }
+  59          
+  60          /******************************************
+  61          函数：写一字节函数
+  62          参数：dat---写入的一字节数据
+  63          返回值：无
+  64          ******************************************/
+  65          void TM1722_Write_Byte(uint8_t dat)
+  66          {
+  67   1        uint8_t i;
+  68   1               
+  69   1        delay_us(50); //用于片选信号的延时
+  70   1        TM1722_STB=0;     //有效的片选信号
+  71   1        for(i=0;i<8;i++)
+  72   1        {
+  73   2         TM1722_CLK = 0;
+  74   2         TM1722_DIO = dat&0x01;
+  75   2         TM1722_CLK = 1;    //时钟上升沿，送入一位数据
+  76   2         dat>>=1;      
+  77   2        }
+  78   1        delay_us(50);   //用于片选信号的延时
+  79   1      }
+  80          
+  81          void num_dis(uint8_t num)
+  82          {
+  83   1          uint8_t hundreds = num / 100;  // 获取百位数
+  84   1          uint8_t tens = (num / 10) % 10;  // 获取十位数
+  85   1          uint8_t ones = num % 10;  // 获取个位数
+  86   1          
+  87   1          value_0B &= 0x00;
+  88   1          value_0A &= 0X00;
+  89   1          value_07 &= 0X00;
+  90   1          value_06 &= 0X00;
+  91   1          
+  92   1          value_0B |= (num_tab[hundreds]>>4);
+  93   1          value_0A |= num_tab[hundreds];
+  94   1          value_07 |= num_tab[tens];
+  95   1          value_06 |= num_tab[ones]; 
+  96   1      
+  97   1          if((num<10)&&(num>=0))
+  98   1          {
+  99   2              lcd_write_val(addr_tab[ADDR_0B],0x00);
+ 100   2      
+ 101   2              lcd_write_val(addr_tab[ADDR_0A],0X00);
+ 102   2              
+ 103   2              lcd_write_val(addr_tab[ADDR_07],0X00);
+ 104   2      
+ 105   2              lcd_write_val(addr_tab[ADDR_06],value_06);  
+ 106   2          }
+ 107   1          else if((num<100)&&(num>=10))
+ 108   1          {
+ 109   2              lcd_write_val(addr_tab[ADDR_0B],0x00);
+ 110   2      
+ 111   2              lcd_write_val(addr_tab[ADDR_0A],0X00);
+ 112   2              
+ 113   2              lcd_write_val(addr_tab[ADDR_07],value_07);
+ 114   2      
+ 115   2              lcd_write_val(addr_tab[ADDR_06],value_06);   
+ 116   2          }
+C51 COMPILER V9.60.7.0   SCREEN                                                            01/10/2025 23:04:24 PAGE 3   
+
+ 117   1          else
+ 118   1          {
+ 119   2              lcd_write_val(addr_tab[ADDR_0B],value_0B);
+ 120   2              
+ 121   2              lcd_write_val(addr_tab[ADDR_0A],value_0A);
+ 122   2              
+ 123   2              lcd_write_val(addr_tab[ADDR_07],value_07);
+ 124   2      
+ 125   2              lcd_write_val(addr_tab[ADDR_06],value_06);
+ 126   2          }
+ 127   1          
+ 128   1      }
+ 129          
+ 130          void wind_dis(uint8_t num)
+ 131          {
+ 132   1          value_0F &= 0x30;
+ 133   1          
+ 134   1          switch(num)
+ 135   1          {
+ 136   2              case 0:
+ 137   2                  value_0F |= 0x00;
+ 138   2                  break;
+ 139   2              
+ 140   2              case 1:
+ 141   2                  value_0F |= 0x40;
+ 142   2                  break;
+ 143   2              
+ 144   2              case 2:
+ 145   2                  value_0F |= 0xc0;
+ 146   2                  break;
+ 147   2              
+ 148   2              case 3:
+ 149   2                  value_0F |= 0xc8;
+ 150   2                  break;
+ 151   2              
+ 152   2              case 4:
+ 153   2                  value_0F |= 0xcc;
+ 154   2                  break;
+ 155   2              
+ 156   2              case 5:
+ 157   2                  value_0F |= 0xce;
+ 158   2                  break;
+ 159   2              
+ 160   2              case 6:
+ 161   2                  value_0F |= 0xcf;
+ 162   2                  break;
+ 163   2              
+ 164   2              default:
+ 165   2                  break;
+ 166   2          }
+ 167   1          
+ 168   1          lcd_write_val(addr_tab[ADDR_0F],value_0F);
+ 169   1      }
+ 170          
+ 171          void channel_dis(uint8_t num)
+ 172          {
+ 173   1          value_0E &= 0x80;
+ 174   1          value_0B &= 0x00;
+ 175   1          
+ 176   1          switch(num)
+ 177   1          {
+ 178   2              case 1:
+C51 COMPILER V9.60.7.0   SCREEN                                                            01/10/2025 23:04:24 PAGE 4   
+
+ 179   2                  value_0E |= 0x04;
+ 180   2                  value_0B |= 0x40;
+ 181   2                  break;
+ 182   2              
+ 183   2              case 2:
+ 184   2                  value_0E |= 0x02;
+ 185   2                  value_0B |= 0x20;
+ 186   2                  break;
+ 187   2              
+ 188   2              case 3:
+ 189   2                  value_0E |= 0x01;
+ 190   2                  value_0B |= 0x10;
+ 191   2                  break;
+ 192   2              
+ 193   2              case 4:
+ 194   2                  value_0E |= 0x06;
+ 195   2                  value_0B |= 0x60;
+ 196   2                  break;
+ 197   2              
+ 198   2              case 5:
+ 199   2                  value_0E |= 0x03;
+ 200   2                  value_0B |= 0x30;
+ 201   2                  break;
+ 202   2              
+ 203   2              case 6:
+ 204   2                  value_0E |= 0x05;
+ 205   2                  value_0B |= 0x50;
+ 206   2                  break;
+ 207   2              
+ 208   2              case 7:
+ 209   2                  value_0E |= 0x07;
+ 210   2                  value_0B |= 0x70;
+ 211   2                  break;
+ 212   2              
+ 213   2              default:
+ 214   2                  break;
+ 215   2          }
+ 216   1          
+ 217   1          lcd_write_val(addr_tab[ADDR_0E],value_0E);
+ 218   1          lcd_write_val(addr_tab[ADDR_0B],value_0B);
+ 219   1      }
+ 220          
+ 221          void sun_dis(bit on_off)
+ 222          {
+ 223   1          value_0E &= 0xf7;
+ 224   1          if(on_off==DIS_ON)
+ 225   1          {
+ 226   2              value_0E |= 0x08;   
+ 227   2          }
+ 228   1          lcd_write_val(addr_tab[ADDR_0E],value_0E);
+ 229   1      }
+ 230          
+ 231          void sync_dis(bit on_off)
+ 232          {
+ 233   1          value_03 &= 0xef;
+ 234   1          if(on_off==DIS_ON)
+ 235   1          {
+ 236   2              value_03 |= 0x10;   
+ 237   2          }
+ 238   1          lcd_write_val(addr_tab[ADDR_03],value_03);
+ 239   1      }
+ 240          
+C51 COMPILER V9.60.7.0   SCREEN                                                            01/10/2025 23:04:24 PAGE 5   
+
+ 241          void alarm_dis(bit on_off)
+ 242          {
+ 243   1          value_03 &= 0xdf;
+ 244   1          if(on_off==DIS_ON)
+ 245   1          {
+ 246   2              value_03 |= 0x20;   
+ 247   2          }
+ 248   1          lcd_write_val(addr_tab[ADDR_03],value_03);
+ 249   1      }
+ 250          
+ 251          //void F_dis(bit on_off)
+ 252          //{
+ 253          //    value_0E &= 0x7f;
+ 254          //    if(on_off==DIS_ON)
+ 255          //    {
+ 256          //        value_0E |= 0x80;   
+ 257          //    }
+ 258          //    lcd_write_val(addr_tab[ADDR_0E],value_0E);
+ 259          //}
+ 260          
+ 261          //void M_dis(bit on_off)
+ 262          //{
+ 263          //    value_0E &= 0xbf;
+ 264          //    if(on_off==DIS_ON)
+ 265          //    {
+ 266          //        value_0E |= 0x40;   
+ 267          //    }
+ 268          //    lcd_write_val(addr_tab[ADDR_0E],value_0E);
+ 269          //}
+ 270          
+ 271          //void R_dis(bit on_off)
+ 272          //{
+ 273          //    value_0E &= 0xdf;
+ 274          //    if(on_off==DIS_ON)
+ 275          //    {
+ 276          //        value_0E |= 0x20;   
+ 277          //    }
+ 278          //    lcd_write_val(addr_tab[ADDR_0E],value_0E);
+ 279          //}
+ 280          
+ 281          void Celsius_dis(bit on_off)
+ 282          {
+ 283   1          value_03 &= 0xbf;
+ 284   1          if(on_off==DIS_ON)
+ 285   1          {
+ 286   2              value_03 |= 0x40;   
+ 287   2          }
+ 288   1          lcd_write_val(addr_tab[ADDR_03],value_03);
+ 289   1      }
+ 290          
+ 291          void mode_dis(bit on_off)
+ 292          {
+ 293   1          value_03 &= 0x7f;
+ 294   1          if(on_off==DIS_ON)
+ 295   1          {
+ 296   2              value_03 |= 0x80;   
+ 297   2          }
+ 298   1          lcd_write_val(addr_tab[ADDR_03],value_03);
+ 299   1      }
+ 300          
+ 301          void percentage_dis(bit on_off)
+ 302          {
+C51 COMPILER V9.60.7.0   SCREEN                                                            01/10/2025 23:04:24 PAGE 6   
+
+ 303   1          value_06 &= 0xf7;
+ 304   1          if(on_off==DIS_ON)
+ 305   1          {
+ 306   2              value_06 |= 0x08;   
+ 307   2          }
+ 308   1          lcd_write_val(addr_tab[ADDR_06],value_06);
+ 309   1      }
+ 310          
+ 311          //void cur_dis(bit on_off)
+ 312          //{
+ 313          //    value_03 &= 0xf7;
+ 314          //    if(on_off==DIS_ON)
+ 315          //    {
+ 316          //        value_03 |= 0x08;   
+ 317          //    }
+ 318          //    lcd_write_val(addr_tab[ADDR_03],value_03);
+ 319          //}
+ 320          
+ 321          //void set_dis(bit on_off)
+ 322          //{
+ 323          //    value_03 &= 0xfb;
+ 324          //    if(on_off==DIS_ON)
+ 325          //    {
+ 326          //        value_03 |= 0x04;   
+ 327          //    }
+ 328          //    lcd_write_val(addr_tab[ADDR_03],value_03);
+ 329          //}
+ 330          
+ 331          void fan_center_dis(bit on_off)
+ 332          {
+ 333   1          value_0F &= 0xdf;
+ 334   1          if(on_off==DIS_ON)
+ 335   1          {
+ 336   2              value_0F |= 0x20;   
+ 337   2          }
+ 338   1          lcd_write_val(addr_tab[ADDR_0F],value_0F);
+ 339   1      }
+ 340          
+ 341          void fan_leaf1_dis(bit on_off)
+ 342          {
+ 343   1          value_0E &= 0xef;
+ 344   1          if(on_off==DIS_ON)
+ 345   1          {
+ 346   2              value_0E |= 0x10;   
+ 347   2          }
+ 348   1          lcd_write_val(addr_tab[ADDR_0E],value_0E);
+ 349   1      }
+ 350          
+ 351          void fan_leaf2_dis(bit on_off)
+ 352          {
+ 353   1          value_0F &= 0xef;
+ 354   1          if(on_off==DIS_ON)
+ 355   1          {
+ 356   2              value_0F |= 0x10;   
+ 357   2          }
+ 358   1          lcd_write_val(addr_tab[ADDR_0F],value_0F);
+ 359   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    954    ----
+   CONSTANT SIZE    =   ----    ----
+C51 COMPILER V9.60.7.0   SCREEN                                                            01/10/2025 23:04:24 PAGE 7   
+
+   XDATA SIZE       =     24       4
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       9
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

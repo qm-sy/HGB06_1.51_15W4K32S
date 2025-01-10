@@ -1,0 +1,252 @@
+C51 COMPILER V9.60.7.0   TIMER                                                             01/10/2025 23:04:24 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE TIMER
+OBJECT MODULE PLACED IN .\Output\timer.obj
+COMPILER INVOKED BY: D:\APP\Keil_STM32\C51\BIN\C51.EXE Src\timer.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\Inc;D:\APP\Ke
+                    -il_v5\C51\INC) DEBUG OBJECTEXTEND PRINT(.\Listings\timer.lst) OBJECT(.\Output\timer.obj)
+
+line level    source
+
+   1          #include "STC15W4Kxx.h"
+   2          #include "timer.h"
+   3          #include "stdint.h"
+   4          #include "key.h"
+   5          
+   6          bit fan_dis_bit = 0;
+   7          bit temp_dis_bit = 0;
+   8          bit zero_bit = 0;
+   9          bit buzzer_bit = 1;
+  10          bit scan_stop_bit = 1;
+  11          bit scan_start_bit = 0;  
+  12          bit external_24bit = 0;
+  13          bit power_bit = 1;
+  14          bit wind_bit = 1;
+  15          bit previous_value = 0;
+  16          bit delay_bit1 = 0;
+  17          bit delay_bit2 = 0;
+  18          bit delay_bit3 = 0;
+  19          uint8_t channel_num = 1;
+  20          uint16_t tim1_t = 58400;
+  21          void Tim0Init()         //11.0592Mhz  1ms
+  22          {
+  23   1          AUXR |= 0X80;       //修改计数速率，定时器时钟设置为12T模式
+  24   1              
+  25   1              TMOD &= 0XF0;       //清空TIM0需要配置的低四位（低四位是TIM0,高四位是TIM1）
+  26   1      
+  27   1              TH0 = 0XCD;         // TH0 高四位  TL0 低四位
+  28   1              TL0 = 0XD4;         //通过计算得出的值，计算公式在下面
+  29   1              
+  30   1              TF0 = 0;            //清除TC0N-TF0  中断溢出标志，溢出后自动置1，CPU响应中断后置硬件清0
+  31   1              TR0 = 1;            //TCON-TR0  TIM0开始计数启动
+  32   1      
+  33   1              ET0 = 1;            //打开IE-ET0，TIM0中断
+  34   1      }
+  35          
+  36          
+  37          void Tim1Init()         //11.0592Mhz  10ms  16位手动装载
+  38          {   
+  39   1              AUXR &= 0xBF;       //定时器时钟12T模式
+  40   1              TMOD &= 0x0F;       //设置定时器模式
+  41   1              TMOD |= 0x10;       //设置定时器模式   手动/自动开关
+  42   1      }
+  43          
+  44          void Tim3Init(void)             //10毫秒@11.0592MHz
+  45          {
+  46   1              T4T3M &= 0xFD;      //定时器时钟12T模式
+  47   1              T3L = 0x00;         //设置定时初始值
+  48   1              T3H = 0xDC;         //设置定时初始值
+  49   1              T4T3M |= 0x08;      //定时器3开始计时
+  50   1          
+  51   1          IE2 |= 0x20; //打开IE2-ET2，TIM3中断
+  52   1      }
+  53          
+  54          void ET0ISR(void) interrupt 0 
+C51 COMPILER V9.60.7.0   TIMER                                                             01/10/2025 23:04:24 PAGE 2   
+
+  55          {
+  56   1          tempchannel1 = tempchannel2 = tempchannel3 = 1;    
+  57   1              /*延时移相*/
+  58   1          TL1 = tim1_t;                               //设置定时初始值
+  59   1              TH1 = tim1_t>>8;                                //设置定时初始值
+  60   1      
+  61   1          zero_bit = 1;
+  62   1          
+  63   1          TR1 = 1;                            //定时器1开始计时      
+  64   1          ET1 = 1; 
+  65   1      }
+  66          
+  67          void Tim0Isr(void) interrupt 1 
+  68          {
+  69   1      
+  70   1      }
+  71          
+  72          void Tim1Isr(void) interrupt 3 
+  73          {
+  74   1      
+  75   1          if((zero_bit == 1)&&(power_bit == 1))
+  76   1          {
+  77   2              switch(channel_num)
+  78   2              {
+  79   3                  case 1: {tempchannel1=0; tempchannel2=1; tempchannel3=1;}break;
+  80   3                  case 2: {tempchannel1=1; tempchannel2=0; tempchannel3=1;}break;
+  81   3                  case 3: {tempchannel1=1; tempchannel2=1; tempchannel3=0;}break;
+  82   3                  case 4: {tempchannel1=0; tempchannel2=0; tempchannel3=1;}break;
+  83   3                  case 5: {tempchannel1=1; tempchannel2=0; tempchannel3=0;}break;
+  84   3                  case 6: {tempchannel1=0; tempchannel2=1; tempchannel3=0;}break;
+  85   3                  case 7: {tempchannel1=0; tempchannel2=0; tempchannel3=0;}break;
+  86   3              }
+  87   2                  /*发送一个10us的脉冲*/
+  88   2                  zero_bit = 0; 
+  89   2      
+  90   2                  TL1 = 0xF7;                         //设置定时初始值
+  91   2                  TH1 = 0xFF;                         //设置定时初始值
+  92   2          }
+  93   1        
+  94   1          else
+  95   1          {
+  96   2              tempchannel1 = tempchannel2 = tempchannel3 = 1;     //1-0-1的脉冲 2us
+  97   2              TR1 = 0;                                //定时器关闭计时      
+  98   2              ET1 = 0; 
+  99   2          }
+ 100   1      }
+ 101          
+ 102          void Tim3Isr(void) interrupt 19 
+ 103          {
+ 104   1          static uint8_t buzzer_continue_cnt = 0;
+ 105   1          static uint8_t sacn_cnt = 0;
+ 106   1          static uint8_t key_cnt = 0;
+ 107   1          static uint8_t sync_delay_cnt = 0;
+ 108   1          static uint8_t temp_delay_cnt = 0;
+ 109   1          static uint8_t fan_rotate_cnt = 0;
+ 110   1          static uint8_t temp_rotate_cnt = 0;
+ 111   1          static uint16_t fan_delay_cnt = 0;
+ 112   1          
+ 113   1          if((delay_bit1 == 1)&&(delay_bit2 == 1))
+ 114   1          {
+ 115   2              fan_delay_cnt++;
+ 116   2              if(fan_delay_cnt==1500)
+C51 COMPILER V9.60.7.0   TIMER                                                             01/10/2025 23:04:24 PAGE 3   
+
+ 117   2              {
+ 118   3                  fan_delay_cnt = 0;
+ 119   3                  delay_bit1 = 0;
+ 120   3                  delay_bit2 = 0;
+ 121   3                  delay_bit3 = 1;
+ 122   3              }
+ 123   2          }
+ 124   1          if((delay_bit1&delay_bit2)==0)
+ 125   1          {
+ 126   2              fan_delay_cnt = 0;
+ 127   2          }
+ 128   1      //    if((delay_bit1 == 1)&&(delay_bit2 == 0))
+ 129   1      //    {
+ 130   1      //        fan_delay_cnt = 0;
+ 131   1      //    }
+ 132   1          fan_rotate_cnt++;
+ 133   1          if(fan_rotate_cnt>15)
+ 134   1          {
+ 135   2              fan_dis_bit = ~fan_dis_bit;
+ 136   2              fan_rotate_cnt = 0;
+ 137   2          }
+ 138   1          
+ 139   1          temp_rotate_cnt++;
+ 140   1          if(temp_rotate_cnt>50)
+ 141   1          {
+ 142   2              temp_dis_bit = ~temp_dis_bit;
+ 143   2              temp_rotate_cnt = 0;
+ 144   2          }
+ 145   1          
+ 146   1          key_cnt++;
+ 147   1          if(key_cnt>5)
+ 148   1          {
+ 149   2              key_cnt=0; 
+ 150   2              key_val = (P0&0X0f);
+ 151   2          }
+ 152   1          
+ 153   1          if(sync_delay_bit == 1)
+ 154   1          {
+ 155   2              sync_delay_cnt++;
+ 156   2              if(sync_delay_cnt>150)
+ 157   2              {
+ 158   3                  sync_delay_bit = 0;
+ 159   3                  sync_delay_cnt = 0;
+ 160   3              }
+ 161   2          }
+ 162   1      
+ 163   1          if(temp_delay_bit == 1)
+ 164   1          {
+ 165   2              temp_delay_cnt++;
+ 166   2              if(temp_delay_cnt>150)
+ 167   2              {
+ 168   3                  temp_delay_bit = 0;
+ 169   3                  temp_delay_cnt = 0;
+ 170   3              }
+ 171   2          }
+ 172   1          
+ 173   1          if(buzzer_bit==0)
+ 174   1          {
+ 175   2              buzzer_continue_cnt++;
+ 176   2              if(buzzer_continue_cnt>10)
+ 177   2              {
+ 178   3                  buzzer_continue_cnt=0; 
+C51 COMPILER V9.60.7.0   TIMER                                                             01/10/2025 23:04:24 PAGE 4   
+
+ 179   3                  buzzer=buzzer_bit=1;
+ 180   3              }
+ 181   2          } 
+ 182   1          
+ 183   1          if(scan_stop_bit == 1)
+ 184   1          {
+ 185   2              sacn_cnt++;
+ 186   2              if(sacn_cnt>10)
+ 187   2              {
+ 188   3                  scan_start_bit = 1;
+ 189   3                  scan_stop_bit = 0;
+ 190   3                  sacn_cnt = 0;
+ 191   3              }
+ 192   2          }
+ 193   1             
+ 194   1          if(P07==0)
+ 195   1          {
+ 196   2              external_24bit = 1;   //24V接入
+ 197   2              previous_value = 1;
+ 198   2          }
+ 199   1          if(P07==1)
+ 200   1          {
+ 201   2              external_24bit = 0;
+ 202   2              previous_value = 0;
+ 203   2          }
+ 204   1      }
+ 205          
+ 206          void power_crl(uint8_t power_num)
+ 207          { 
+ 208   1          if(power_bit==1)
+ 209   1          {
+ 210   2              ET1 = 1;
+ 211   2          }
+ 212   1          else
+ 213   1          {
+ 214   2              ET1 = 0;
+ 215   2          }
+ 216   1          
+ 217   1          tim1_t = power_num*64+58400;
+ 218   1          
+ 219   1      //    TL1 = tim1_t;                   //设置定时初始值
+ 220   1      //    TH1 = tim1_t>>8;                          //设置定时初始值
+ 221   1      
+ 222   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    480    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     12    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =     13    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
