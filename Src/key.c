@@ -20,7 +20,7 @@ uint8_t temp_num = 80;
 
 uint8_t key_val = 0;
 
-uint8_t mode_info[5];
+uint8_t mode_info[6];
 
 bit sync_delay_bit = 0;
 bit temp_delay_bit = 0;
@@ -30,6 +30,7 @@ void button_scan()
 {
     uint8_t continue_cnt1;
     uint8_t continue_cnt2;
+    uint16_t continue_cnt3;
     if(scan_start_bit == 1)
     {
         switch(key_val)
@@ -61,8 +62,19 @@ void button_scan()
                 }
                 delay_ms(50);
                 break;
-//            case FunctionKey:
-            
+            case FunctionKey:
+                continue_cnt3 = 300;
+                while((key_val==FunctionKey)&&(continue_cnt3>0))
+                {
+                    continue_cnt3--; 
+                    delay_ms(10);
+                }
+                
+                if(continue_cnt3 == 0)           //����1s�жϣ�����ͬ�� 
+                {
+                    fan_delay_set();
+                }
+                break;
             case ModeChoose:                    //����ͬ���л���mode�л�
                 continue_cnt2 = 100;
                 while((key_val==ModeChoose)&&(continue_cnt2>0))
@@ -213,6 +225,71 @@ void channel_choose()
     eeprom_data_write();
 }
 
+void fan_delay_set()
+{
+    unsigned char num3 = 0;
+    num3 = fengshan_delay;
+    
+    buzzer=buzzer_bit=0;
+    delay_ms(500);
+    while(key_val!=FunctionKey)
+    {
+        if(temp_dis_bit)
+        {
+            num_dis(fengshan_delay);
+            //Celsius_dis(DIS_ON);
+            
+        }
+        if(~temp_dis_bit)
+        {
+            lcd_write_val(addr_tab[ADDR_0B],0x00);
+
+            lcd_write_val(addr_tab[ADDR_0A],0X00);
+
+            lcd_write_val(addr_tab[ADDR_07],0X00);
+
+            lcd_write_val(addr_tab[ADDR_06],0X00);
+            
+            //Celsius_dis(DIS_ON);
+            
+        }
+        if(key_val == UpKey)
+        {
+            buzzer=buzzer_bit=0;
+            num3+=1;
+            if(num3>200)
+            {
+                num3 = 200;
+            }
+            fengshan_delay = num3;
+
+            delay_ms(100);
+        }
+        if(key_val == DownKey)
+        {
+            buzzer=buzzer_bit=0;
+            num3-=1;
+            if(num3<2)
+            {
+                num3 = 1;
+            }
+            fengshan_delay = num3;
+
+            delay_ms(100);
+        }
+    }
+    temp_delay_bit = 1;
+    num_dis(power_num);           
+    channel_dis(channel_num);
+    Celsius_dis(DIS_OFF);
+    percentage_dis(DIS_ON);
+    if(power_bit==1)
+    {
+        sun_dis(DIS_ON);
+    }
+    eeprom_data_write();
+}
+
 void temp_set()
 {
     unsigned char num3 = 0;
@@ -293,7 +370,7 @@ void mode_choose()
     
     percentage_dis(DIS_OFF);
     mode_dis(DIS_ON);       
-    num_dis(mode_num);           //��ʾģʽ��źͱ�־
+    num_dis(mode_num);           //��ʾģʽ��źͱ��?
       
     eeprom_data_read(mode_num);  //��ȡchannel_num��sync_bit��wind_num��power_num
         
@@ -315,7 +392,7 @@ void mode_choose()
 
     temp_listen();
 
-    eeprom_mode_save();         //��¼ģʽ���
+    eeprom_mode_save();         //��¼ģʽ���?
 }
 
 void sync_choose()

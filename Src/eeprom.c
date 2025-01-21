@@ -82,6 +82,8 @@ void ISP_earse(uint16_t addr)
 //        eeprom_bit = 0;
 //    }
 //}
+
+
 void eeprom_mode_save()
 {
     uint16_t addr = 0x0000;
@@ -102,12 +104,13 @@ void eeprom_data_write()
     mode_info[2] = wind_num;            //风力
     mode_info[3] = power_num;           //功率
     mode_info[4] = temp_num;            //温度
+    mode_info[5] = fengshan_delay;
 
     addr = (mode_num * 2)<<8;
     
     ISP_earse(addr);
     
-    for(i=0;i<5;i++)
+    for(i=0;i<6;i++)
     {
         ISP_write(addr,mode_info[i]);
         addr++;
@@ -137,7 +140,7 @@ void eeprom_data_read(uint8_t mode)
     uint16_t addr;
     
     addr = (mode * 2)<<8;
-    for(i=0;i<5;i++)
+    for(i=0;i<6;i++)
     {
         mode_info[i] = ISP_read(addr);
         addr++;
@@ -148,5 +151,6 @@ void eeprom_data_read(uint8_t mode)
     wind_num = mode_info[2];
     power_num = mode_info[3];
     temp_num = mode_info[4];//读取channel_num、sync_bit、wind_num、power_num、temp_num
+    fengshan_delay = mode_info[5];
 }
     

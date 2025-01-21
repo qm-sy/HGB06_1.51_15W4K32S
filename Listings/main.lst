@@ -1,10 +1,10 @@
-C51 COMPILER V9.60.7.0   MAIN                                                              01/10/2025 22:08:16 PAGE 1   
+C51 COMPILER V9.60.7.0   MAIN                                                              01/21/2025 14:39:44 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
 OBJECT MODULE PLACED IN .\Output\main.obj
-COMPILER INVOKED BY: D:\APP\Keil_STM32\C51\BIN\C51.EXE User\main.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\Inc;D:\APP\Ke
-                    -il_v5\C51\INC) DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) OBJECT(.\Output\main.obj)
+COMPILER INVOKED BY: D:\APP\Keil_v5\C51\BIN\C51.EXE User\main.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\Inc;D:\APP\Keil_
+                    -v5\C51\INC) DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) OBJECT(.\Output\main.obj)
 
 line level    source
 
@@ -57,63 +57,64 @@ line level    source
   47   2              wind_num = 3;
   48   2              power_num = 50;
   49   2              temp_num = 100;//��ȡchannel_num��sync_bit��wind_num��power_num��temp_num
-  50   2              eeprom_mode_save();
-  51   2              for(y = 1;y<6;y++) 
-  52   2              
-  53   2              {
-  54   3                  mode_num = y;
-C51 COMPILER V9.60.7.0   MAIN                                                              01/10/2025 22:08:16 PAGE 2   
+  50   2              fengshan_delay = 15;
+  51   2              eeprom_mode_save();
+  52   2              for(y = 1;y<6;y++) 
+  53   2              
+  54   2              {
+C51 COMPILER V9.60.7.0   MAIN                                                              01/21/2025 14:39:44 PAGE 2   
 
-  55   3                  eeprom_data_write();
-  56   3               }
-  57   2          }
-  58   1          
-  59   1          restart:
-  60   1          delay_ms(1000);
-  61   1          
-  62   1          while(on_off)
-  63   1          {
-  64   2              on_off = power_on();
-  65   2          }  
-  66   1          //IE2 |= 0x20; //��IE2-ET2��TIM3�ж�
-  67   1          P20 = 0; 
-  68   1      
-  69   1          led_init();    
-  70   1          lcd_init();  
-  71   1          ISP_data_init();
-  72   1          percentage_dis(DIS_ON);
-  73   1          if(power_bit==1)
-  74   1          {
-  75   2              sun_dis(DIS_ON);
-  76   2          }
-  77   1          buzzer=buzzer_bit=0;
-  78   1          
-  79   1          while(1)
-  80   1          {
-  81   2              button_scan();
-  82   2              fan_rotate();
-  83   2              master_pwm_adc_listen();
-  84   2              temp_listen();
-  85   2              printf("The value of pwm_adc_val is %d \r\n",(int)pwm_adc_val);
-  86   2              printf("The value of ntc6_adc_val is %d \r\n",(int)ntc6_adc_val);
-  87   2              sync_fan_delay_listen();
-  88   2              power_off();
-  89   2              if(on_off == 1)
-  90   2              {
-  91   3                  buzzer=buzzer_bit=0;
-  92   3                  P24 = P25 = P26 = 1;
-  93   3                  P43 = P44 = 1;
-  94   3                  P20 = 1;
-  95   3                  goto restart;   
-  96   3              }
-  97   2              
-  98   2          }
-  99   1      }
- 100          
+  55   3                  mode_num = y;
+  56   3                  eeprom_data_write();
+  57   3               }
+  58   2          }
+  59   1          
+  60   1          restart:
+  61   1          delay_ms(1000);
+  62   1          
+  63   1          while(on_off)
+  64   1          {
+  65   2              on_off = power_on();
+  66   2          }  
+  67   1          //IE2 |= 0x20; //��IE2-ET2��TIM3�ж�
+  68   1          P20 = 0; 
+  69   1      
+  70   1          led_init();    
+  71   1          lcd_init();  
+  72   1          ISP_data_init();
+  73   1          percentage_dis(DIS_ON);
+  74   1          if(power_bit==1)
+  75   1          {
+  76   2              sun_dis(DIS_ON);
+  77   2          }
+  78   1          buzzer=buzzer_bit=0;
+  79   1          
+  80   1          while(1)
+  81   1          {
+  82   2              button_scan();
+  83   2              fan_rotate();
+  84   2              master_pwm_adc_listen();
+  85   2              temp_listen();
+  86   2              printf("The value of pwm_adc_val is %d \r\n",(int)pwm_adc_val);
+  87   2              printf("The value of ntc6_adc_val is %d \r\n",(int)ntc6_adc_val);
+  88   2              sync_fan_delay_listen();
+  89   2              power_off();
+  90   2              if(on_off == 1)
+  91   2              {
+  92   3                  buzzer=buzzer_bit=0;
+  93   3                  P24 = P25 = P26 = 1;
+  94   3                  P43 = P44 = 1;
+  95   3                  P20 = 1;
+  96   3                  goto restart;   
+  97   3              }
+  98   2              
+  99   2          }
+ 100   1      }
+ 101          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    282    ----
+   CODE SIZE        =    288    ----
    CONSTANT SIZE    =    100    ----
    XDATA SIZE       =   ----       1
    PDATA SIZE       =   ----    ----

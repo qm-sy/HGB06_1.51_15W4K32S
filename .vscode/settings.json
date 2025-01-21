@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "timer.h": "c",
+        "screen.h": "c",
+        "pwm.h": "c",
+        "stdint.h": "c",
+        "key.h": "c",
+        "sync.h": "c",
+        "stdio.h": "c",
+        "eeprom.h": "c",
+        "delay.h": "c"
+    }
+}

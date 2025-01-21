@@ -47,6 +47,7 @@ void main()
         wind_num = 3;
         power_num = 50;
         temp_num = 100;//��ȡchannel_num��sync_bit��wind_num��power_num��temp_num
+        fengshan_delay = 15;
         eeprom_mode_save();
         for(y = 1;y<6;y++) 
         

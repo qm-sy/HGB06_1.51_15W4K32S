@@ -28,7 +28,7 @@ extern bit sync_bit;
 
 extern uint8_t key_val;
 
-extern uint8_t mode_info[5];
+extern uint8_t mode_info[6];
 
 void button_scan();
 void fan_up();
@@ -43,5 +43,5 @@ void power_key();
 void fan_rotate();
 uint8_t power_on();
 void power_off();
-
+void fan_delay_set();
 #endif 

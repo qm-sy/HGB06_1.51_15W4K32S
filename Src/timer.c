@@ -25,6 +25,7 @@ uint8_t channel_num = 1;
 uint16_t tim1_t = 58400;
 uint8_t pwm_num_cnt = 0;
 uint8_t temp_listen_cnt = 1;
+uint8_t fengshan_delay = 5;
 
 void Tim0Init()         //11.0592Mhz  2333us
 {
@@ -136,7 +137,7 @@ void Tim3Isr(void) interrupt 19
     if((delay_bit1 == 1)&&(delay_bit2 == 1))
     {
         fan_delay_cnt++;
-        if(fan_delay_cnt==500)
+        if(fan_delay_cnt == fengshan_delay*100)
         {
             fan_delay_cnt = 0;
             delay_bit1 = 0;

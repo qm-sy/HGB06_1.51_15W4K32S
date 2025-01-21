@@ -26,6 +26,7 @@ extern uint16_t pwm_adc_val;
 extern uint16_t ntc6_adc_val;
 extern uint8_t temp_listen_cnt;
 extern bit temp_listen_bit;
+extern uint8_t fengshan_delay;
 void Tim0Init();
 void Tim1Init();
 void Tim3Init();

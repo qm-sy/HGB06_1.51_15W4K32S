@@ -1,0 +1,40 @@
+{
+    "configurations": [
+        {
+            "name": "Target 1",
+            "includePath": [
+                "d:\\workspace\\HGB06_1.51_15W4K32S\\Inc",
+                "D:\\APP\\Keil_v5\\C51\\INC",
+                "d:\\workspace\\HGB06_1.51_15W4K32S",
+                "d:\\workspace\\HGB06_1.51_15W4K32S\\Src",
+                "d:\\workspace\\HGB06_1.51_15W4K32S\\User"
+            ],
+            "defines": [
+                "__C51__",
+                "__VSCODE_C51__",
+                "reentrant=",
+                "compact=",
+                "small=",
+                "large=",
+                "data=",
+                "idata=",
+                "pdata=",
+                "bdata=",
+                "xdata=",
+                "code=",
+                "bit=char",
+                "sbit=char",
+                "sfr=char",
+                "sfr16=int",
+                "sfr32=int",
+                "interrupt=",
+                "using=",
+                "_at_=",
+                "_priority_=",
+                "_task_="
+            ],
+            "intelliSenseMode": "${default}"
+        }
+    ],
+    "version": 4
+}
