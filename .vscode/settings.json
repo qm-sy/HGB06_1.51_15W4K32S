@@ -8,6 +8,13 @@
         "sync.h": "c",
         "stdio.h": "c",
         "eeprom.h": "c",
-        "delay.h": "c"
+        "delay.h": "c",
+        "gpio.h": "c",
+        "adc.h": "c",
+        "ntc.h": "c"
+    },
+    "files.exclude": {
+        "**/.vscode": true,
+        "**/libRichForced.h": true
     }
 }

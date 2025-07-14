@@ -3,6 +3,8 @@
 #include "stdint.h"
 #include "key.h"
 #include "adc.h"
+#include "ntc.h"
+
 bit fan_dis_bit = 0;
 bit temp_dis_bit = 0;
 bit zero_bit = 0;
@@ -18,8 +20,10 @@ bit delay_bit1 = 0;
 bit delay_bit2 = 0;
 bit delay_bit3 = 0;
 bit temp_listen_bit = 0;
+bit button_scan_flag = 0;
+uint16_t button_scan_cnt = 0;
 uint16_t pwm_adc_val = 0;
-uint16_t ntc6_adc_val = 0;
+volatile uint16_t ntc6_val = 0;
 uint8_t pwm_adc_cnt = 0;
 uint8_t channel_num = 1;
 uint16_t tim1_t = 58400;
@@ -59,7 +63,7 @@ void Tim3Init(void)		//10毫秒@11.0592MHz
 
 void ET0ISR(void) interrupt 0 
 {
-    tempchannel1 = tempchannel2 = tempchannel3 = 1;    
+    tempchannel1 = tempchannel2 = 1;    
         /*延时移相*/
     TL1 = tim1_t;				//设置定时初始值
 	TH1 = tim1_t>>8;				//设置定时初始值
@@ -72,25 +76,40 @@ void ET0ISR(void) interrupt 0
 
 void Tim0Isr(void) interrupt 1 
 {
-    pwm_adc_val = Get_ADC12bitResult(7);
-    ntc6_adc_val = Get_ADC12bitResult(6);
-    if( pwm_adc_val < 500 )
+    static uint8_t lunzhuan = 0;
+    if( lunzhuan == 0 )
     {
-        pwm_adc_cnt++;
-        if( pwm_adc_cnt == 100 ) 
+        pwm_adc_val = Get_ADC12bitResult(7);
+        if( pwm_adc_val < 500 )
         {
-            pwm_adc_cnt    = 0;
-            master_pwm_bit = 0; 
-            previous_value = 0;
+            pwm_adc_cnt++;
+            if( pwm_adc_cnt == 100 ) 
+            {
+                pwm_adc_cnt    = 0;
+                master_pwm_bit = 0; 
+                previous_value = 0;
+            }
+        }
+        if( pwm_adc_val > 800 )
+        {
+            pwm_adc_cnt = 0;
+            master_pwm_bit = 1;
+            previous_value = 1;
+        }
+    }else
+    {
+        if(temp_listen_bit == 0)
+        {
+            temp_listen_cnt++;
+            if(temp_listen_cnt>20)
+            {
+                ntc6_val = get_temp(6);
+                temp_listen_bit = 1;
+                temp_listen_cnt = 0;
+            }
         }
     }
-    if( pwm_adc_val > 800 )
-    {
-        pwm_adc_cnt = 0;
-        master_pwm_bit = 1;
-        previous_value = 1;
-    }
-
+    lunzhuan = 1-lunzhuan;
 }
 
 void Tim1Isr(void) interrupt 3 
@@ -98,17 +117,19 @@ void Tim1Isr(void) interrupt 3
 
     if((zero_bit == 1)&&(power_bit == 1))
     {
-        switch(channel_num)
-        {
-            case 1: {tempchannel1=0; tempchannel2=1; tempchannel3=1;}break;
-            case 2: {tempchannel1=1; tempchannel2=0; tempchannel3=1;}break;
-            case 3: {tempchannel1=1; tempchannel2=1; tempchannel3=0;}break;
-            case 4: {tempchannel1=0; tempchannel2=0; tempchannel3=1;}break;
-            case 5: {tempchannel1=1; tempchannel2=0; tempchannel3=0;}break;
-            case 6: {tempchannel1=0; tempchannel2=1; tempchannel3=0;}break;
-            case 7: {tempchannel1=0; tempchannel2=0; tempchannel3=0;}break;
-        }
+
             /*发送一个10us的脉冲*/
+            switch(channel_num)
+            {
+                case 1: {tempchannel1=0; tempchannel2=1;}break;
+                case 2: {tempchannel1=1; tempchannel2=0; }break;
+                case 3: {tempchannel1=0; tempchannel2=0;}break;
+                // case 4: {tempchannel1=0; tempchannel2=0; tempchannel3=1;}break;
+                // case 5: {tempchannel1=1; tempchannel2=0; tempchannel3=0;}break;
+                // case 6: {tempchannel1=0; tempchannel2=1; tempchannel3=0;}break;
+                // case 7: {tempchannel1=0; tempchannel2=0; tempchannel3=0;}break;
+                default: break;
+            }
             zero_bit = 0; 
 
             TL1 = 0xF7;				//设置定时初始值
@@ -117,7 +138,7 @@ void Tim1Isr(void) interrupt 3
   
     else
     {
-        tempchannel1 = tempchannel2 = tempchannel3 = 1;     //1-0-1的脉冲 2us
+        tempchannel1 = tempchannel2 = 1;    //1-0-1的脉冲 2us
         TR1 = 0;				//定时器关闭计时      
         ET1 = 0; 
     }
@@ -189,6 +210,7 @@ void Tim3Isr(void) interrupt 19
         temp_delay_cnt++;
         if(temp_delay_cnt>150)
         {
+            temp_delay_bit = 0;
             temp_delay_cnt = 0;
         }
     }
@@ -214,15 +236,17 @@ void Tim3Isr(void) interrupt 19
         }
     }
 
-    // if(temp_listen_bit == 1)
-    // {
-    //     temp_listen_cnt++;
-    //     if(temp_listen_cnt>150)
-    //     {
-    //         temp_listen_bit = 0;
-    //         temp_listen_cnt = 0;
-    //     }
-    // }
+    if( button_scan_flag == 1 )
+    {
+        button_scan_cnt++;
+        if( button_scan_cnt == 1500 )
+        {
+            button_scan_flag = 0;
+            button_scan_cnt  = 0;
+            P24 = P25 = P26 = 1;
+            P43 = P44 = 1;
+        }
+    }
        
 //    if(P07==0)
 //    {

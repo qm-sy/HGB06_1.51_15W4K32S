@@ -186,29 +186,31 @@ void channel_dis(uint8_t num)
             break;
         
         case 3:
-            value_0E |= 0x01;
-            value_0B |= 0x10;
-            break;
-        
-        case 4:
+            // value_0E |= 0x01;
+            // value_0B |= 0x10;
             value_0E |= 0x06;
             value_0B |= 0x60;
             break;
         
-        case 5:
-            value_0E |= 0x03;
-            value_0B |= 0x30;
-            break;
+        // case 4:
+        //     value_0E |= 0x06;
+        //     value_0B |= 0x60;
+        //     break;
         
-        case 6:
-            value_0E |= 0x05;
-            value_0B |= 0x50;
-            break;
+        // case 5:
+        //     value_0E |= 0x03;
+        //     value_0B |= 0x30;
+        //     break;
         
-        case 7:
-            value_0E |= 0x07;
-            value_0B |= 0x70;
-            break;
+        // case 6:
+        //     value_0E |= 0x05;
+        //     value_0B |= 0x50;
+        //     break;
+        
+        // case 7:
+        //     value_0E |= 0x07;
+        //     value_0B |= 0x70;
+        //     break;
         
         default:
             break;

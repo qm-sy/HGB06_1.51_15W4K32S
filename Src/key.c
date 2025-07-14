@@ -16,12 +16,12 @@ bit sync_bit = 0;
 uint8_t wind_num = 0;
 uint8_t power_num = 0;
 uint8_t mode_num = 0;
-uint8_t temp_num = 80;
+uint8_t temp_num = 45;
 
 uint8_t key_val = 0;
 
 uint8_t mode_info[6];
-
+uint8_t alarm_dis_flag = 0;
 bit sync_delay_bit = 0;
 bit temp_delay_bit = 0;
 
@@ -30,7 +30,7 @@ void button_scan()
 {
     uint8_t continue_cnt1;
     uint8_t continue_cnt2;
-    uint16_t continue_cnt3;
+    uint8_t continue_cnt3;
     if(scan_start_bit == 1)
     {
         switch(key_val)
@@ -41,6 +41,8 @@ void button_scan()
             
             case UpKey:
                 up_key();
+                button_scan_flag = 1;
+                button_scan_cnt = 0;
                 delay_ms(50);
                 break;
             
@@ -53,28 +55,33 @@ void button_scan()
                 }
                 if(continue_cnt1 == 0)           //����1s�жϣ�����ͬ�� 
                 {
-                    temp_set();
+                    fan_delay_set();
                 }
 
                 if(temp_delay_bit == 0)         //�̰���mode�л�
                 {
                     channel_choose();
                 }
+                button_scan_flag = 1;
+                button_scan_cnt = 0;
                 delay_ms(50);
                 break;
+
             case FunctionKey:
-                continue_cnt3 = 300;
+                continue_cnt3 = 100;
                 while((key_val==FunctionKey)&&(continue_cnt3>0))
                 {
                     continue_cnt3--; 
                     delay_ms(10);
                 }
-                
                 if(continue_cnt3 == 0)           //����1s�жϣ�����ͬ�� 
                 {
-                    fan_delay_set();
+                    temp_set();
                 }
+                button_scan_flag = 1;
+                button_scan_cnt = 0;
                 break;
+
             case ModeChoose:                    //����ͬ���л���mode�л�
                 continue_cnt2 = 100;
                 while((key_val==ModeChoose)&&(continue_cnt2>0))
@@ -92,22 +99,29 @@ void button_scan()
                 {
                     mode_choose();
                 }
-                
+                button_scan_flag = 1;
+                button_scan_cnt = 0;
                 delay_ms(50);
                 break;
                 
             case DownKey:
                 down_key();
+                button_scan_flag = 1;
+                button_scan_cnt = 0;
                 delay_ms(50);
                 break;
             
             case FanUp:
                 fan_up();   
+                button_scan_flag = 1;
+                button_scan_cnt = 0;
                 delay_ms(50); 
                 break;
             
             case FanDown:
-                fan_down();          
+                fan_down();   
+                button_scan_flag = 1;     
+                button_scan_cnt = 0;  
                 delay_ms(50);
                 break;
 
@@ -209,7 +223,7 @@ void channel_choose()
 {
     buzzer=buzzer_bit=0;
     
-    if(channel_num==7)
+    if(channel_num==3)
     {
         channel_num = 1;
     }
@@ -218,6 +232,7 @@ void channel_choose()
         channel_num += 1;
     }
     channel_dis(channel_num);
+
     if(power_bit==1)
     {
         sun_dis(DIS_ON);
@@ -232,7 +247,7 @@ void fan_delay_set()
     
     buzzer=buzzer_bit=0;
     delay_ms(500);
-    while(key_val!=FunctionKey)
+    while(key_val!=ChannelChoose)
     {
         if(temp_dis_bit)
         {
@@ -277,6 +292,8 @@ void fan_delay_set()
 
             delay_ms(100);
         }
+        button_scan_flag = 1;
+        button_scan_cnt = 0;
     }
     temp_delay_bit = 1;
     num_dis(power_num);           
@@ -296,8 +313,9 @@ void temp_set()
     num3 = temp_num;
     
     buzzer=buzzer_bit=0;
+    alarm_dis(alarm_dis_flag);
     delay_ms(500);
-    while(key_val!=ChannelChoose)
+    while(key_val!=FunctionKey)
     {
         if(temp_dis_bit)
         {
@@ -321,10 +339,10 @@ void temp_set()
         if(key_val == UpKey)
         {
             buzzer=buzzer_bit=0;
-            num3+=5;
-            if(num3>200)
+            num3+=1;
+            if(num3>120)
             {
-                num3 = 200;
+                num3 = 120;
             }
             temp_num = num3;
 
@@ -333,15 +351,24 @@ void temp_set()
         if(key_val == DownKey)
         {
             buzzer=buzzer_bit=0;
-            num3-=5;
-            if(num3<50)
+            num3-=1;
+            if(num3<20)
             {
-                num3 = 50;
+                num3 = 20;
             }
             temp_num = num3;
 
             delay_ms(100);
         }
+        if(key_val == ModeChoose)
+        {
+            buzzer=buzzer_bit=0;
+            alarm_dis_flag = 1 - alarm_dis_flag;
+            alarm_dis(alarm_dis_flag);
+            delay_ms(100);
+        }
+        button_scan_flag = 1;
+        button_scan_cnt = 0;
     }
     
     temp_delay_bit = 1;         //��ʱ1s  ��ֹ�������̰��� 
@@ -350,6 +377,7 @@ void temp_set()
     channel_dis(channel_num);
     Celsius_dis(DIS_OFF);
     percentage_dis(DIS_ON);
+    alarm_dis(DIS_OFF);
     if(power_bit==1)
     {
         sun_dis(DIS_ON);
@@ -435,6 +463,8 @@ uint8_t power_on()
     {
         if(key_val == PowerKey)
         {
+            button_scan_flag = 1;
+            button_scan_cnt = 0;
             return 0;
         }
     }

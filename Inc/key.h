@@ -25,6 +25,7 @@ extern uint8_t power_num;
 extern uint8_t mode_num;
 extern uint8_t temp_num;
 extern bit sync_bit;
+extern uint8_t alarm_dis_flag;
 
 extern uint8_t key_val;
 

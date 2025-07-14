@@ -46,7 +46,7 @@ void main()
         sync_bit = 1;
         wind_num = 3;
         power_num = 50;
-        temp_num = 100;//��ȡchannel_num��sync_bit��wind_num��power_num��temp_num
+        temp_num = 45;//��ȡchannel_num��sync_bit��wind_num��power_num��temp_num
         fengshan_delay = 15;
         eeprom_mode_save();
         for(y = 1;y<6;y++) 
@@ -79,23 +79,34 @@ void main()
     
     while(1)
     {
-        button_scan();
+        if(key_val == PowerKey)
+        {
+            buzzer=buzzer_bit=0;
+            button_scan_flag = 1;
+            button_scan_cnt = 0;
+        }
+        if( button_scan_flag == 1)
+        {
+            button_scan();
+            P24 = P25 = P26 = 0;
+            P43 = P44 = 0;
+        }
         fan_rotate();
         master_pwm_adc_listen();
         temp_listen();
-        printf("The value of pwm_adc_val is %d \r\n",(int)pwm_adc_val);
-        printf("The value of ntc6_adc_val is %d \r\n",(int)ntc6_adc_val);
         sync_fan_delay_listen();
         power_off();
+        //printf("The value of key is %d \r\n",(int)key_val);
         if(on_off == 1)
         {
             buzzer=buzzer_bit=0;
             P24 = P25 = P26 = 1;
             P43 = P44 = 1;
             P20 = 1;
+            tempchannel1 = tempchannel2 = tempchannel3 = 1;
             goto restart;   
         }
-        
+        delay_ms(5);
     }
 }
 

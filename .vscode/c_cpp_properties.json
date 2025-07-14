@@ -3,11 +3,15 @@
         {
             "name": "Target 1",
             "includePath": [
-                "d:\\workspace\\HGB06_1.51_15W4K32S\\Inc",
+                "d:\\workspace\\code_test\\HGB06_1.51_15W4K32S\\Inc",
                 "D:\\APP\\Keil_v5\\C51\\INC",
-                "d:\\workspace\\HGB06_1.51_15W4K32S",
-                "d:\\workspace\\HGB06_1.51_15W4K32S\\Src",
-                "d:\\workspace\\HGB06_1.51_15W4K32S\\User"
+                "d:\\workspace\\code_test\\HGB06_1.51_15W4K32S",
+                "d:\\workspace\\code_test\\HGB06_1.51_15W4K32S\\Src",
+                "d:\\workspace\\code_test\\HGB06_1.51_15W4K32S\\User",
+                "${workspaceFolder}/**",
+                "d:/workspace/code_test/HGB06_1.51_15W4K32S/libRich",
+                "c:/Users/qm/.vscode/extensions/richintelligent.richextension-3.1.10/include",
+                "c:/Users/qm/.vscode/extensions/richintelligent.richextension-3.1.10/include/Atmel"
             ],
             "defines": [
                 "__C51__",
@@ -33,7 +37,10 @@
                 "_priority_=",
                 "_task_="
             ],
-            "intelliSenseMode": "${default}"
+            "intelliSenseMode": "${default}",
+            "forcedInclude": [
+                "c:/Users/qm/.vscode/extensions/richintelligent.richextension-3.1.10/include/libRichForced.h"
+            ]
         }
     ],
     "version": 4

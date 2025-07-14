@@ -953,7 +953,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_1.51_V001_C (?C_STARTUP)
   D:00B8H         PUBLIC        IP
   D:00D8H         PUBLIC        CCON
   B:00C8H.4       PUBLIC        buzzer
-  X:0142H         PUBLIC        ntc6_adc_val
+  X:0142H         PUBLIC        ntc6_val
   X:0144H         PUBLIC        pwm_num_cnt
   D:0098H         PUBLIC        SCON
   D:0089H         PUBLIC        TMOD

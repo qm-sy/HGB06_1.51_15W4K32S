@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   KEY                                                               01/21/2025 14:39:44 PAGE 1   
+C51 COMPILER V9.60.7.0   KEY                                                               04/03/2025 14:49:14 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE KEY
@@ -26,12 +26,12 @@ line level    source
   16          uint8_t wind_num = 0;
   17          uint8_t power_num = 0;
   18          uint8_t mode_num = 0;
-  19          uint8_t temp_num = 80;
+  19          uint8_t temp_num = 45;
   20          
   21          uint8_t key_val = 0;
   22          
   23          uint8_t mode_info[6];
-  24          
+  24          uint8_t alarm_dis_flag = 0;
   25          bit sync_delay_bit = 0;
   26          bit temp_delay_bit = 0;
   27          
@@ -40,7 +40,7 @@ line level    source
   30          {
   31   1          uint8_t continue_cnt1;
   32   1          uint8_t continue_cnt2;
-  33   1          uint16_t continue_cnt3;
+  33   1          uint8_t continue_cnt3;
   34   1          if(scan_start_bit == 1)
   35   1          {
   36   2              switch(key_val)
@@ -51,449 +51,481 @@ line level    source
   41   3                  
   42   3                  case UpKey:
   43   3                      up_key();
-  44   3                      delay_ms(50);
-  45   3                      break;
-  46   3                  
-  47   3                  case ChannelChoose:
-  48   3                      continue_cnt1 = 100;
-  49   3                      while((key_val==ChannelChoose)&&(continue_cnt1>0))
-  50   3                      {
-  51   4                          continue_cnt1--; 
-  52   4                          delay_ms(10);
-  53   4                      }
-  54   3                      if(continue_cnt1 == 0)           //����1s�жϣ�����ͬ�� 
-C51 COMPILER V9.60.7.0   KEY                                                               01/21/2025 14:39:44 PAGE 2   
+  44   3                      button_scan_flag = 1;
+  45   3                      button_scan_cnt = 0;
+  46   3                      delay_ms(50);
+  47   3                      break;
+  48   3                  
+  49   3                  case ChannelChoose:
+  50   3                      continue_cnt1 = 100;
+  51   3                      while((key_val==ChannelChoose)&&(continue_cnt1>0))
+  52   3                      {
+  53   4                          continue_cnt1--; 
+  54   4                          delay_ms(10);
+C51 COMPILER V9.60.7.0   KEY                                                               04/03/2025 14:49:14 PAGE 2   
 
-  55   3                      {
-  56   4                          temp_set();
-  57   4                      }
-  58   3      
-  59   3                      if(temp_delay_bit == 0)         //�̰���mode�л�
-  60   3                      {
-  61   4                          channel_choose();
-  62   4                      }
-  63   3                      delay_ms(50);
-  64   3                      break;
-  65   3                  case FunctionKey:
-  66   3                      continue_cnt3 = 300;
-  67   3                      while((key_val==FunctionKey)&&(continue_cnt3>0))
-  68   3                      {
-  69   4                          continue_cnt3--; 
-  70   4                          delay_ms(10);
-  71   4                      }
-  72   3                      
-  73   3                      if(continue_cnt3 == 0)           //����1s�жϣ�����ͬ�� 
-  74   3                      {
-  75   4                          fan_delay_set();
+  55   4                      }
+  56   3                      if(continue_cnt1 == 0)           //����1s�жϣ�����ͬ�� 
+  57   3                      {
+  58   4                          fan_delay_set();
+  59   4                      }
+  60   3      
+  61   3                      if(temp_delay_bit == 0)         //�̰���mode�л�
+  62   3                      {
+  63   4                          channel_choose();
+  64   4                      }
+  65   3                      button_scan_flag = 1;
+  66   3                      button_scan_cnt = 0;
+  67   3                      delay_ms(50);
+  68   3                      break;
+  69   3      
+  70   3                  case FunctionKey:
+  71   3                      continue_cnt3 = 100;
+  72   3                      while((key_val==FunctionKey)&&(continue_cnt3>0))
+  73   3                      {
+  74   4                          continue_cnt3--; 
+  75   4                          delay_ms(10);
   76   4                      }
-  77   3                      break;
-  78   3                  case ModeChoose:                    //����ͬ���л���mode�л�
-  79   3                      continue_cnt2 = 100;
-  80   3                      while((key_val==ModeChoose)&&(continue_cnt2>0))
-  81   3                      {
-  82   4                          continue_cnt2--; 
-  83   4                          delay_ms(10);
-  84   4                      }
-  85   3                      
-  86   3                      if(continue_cnt2 == 0)           //����1s�жϣ�����ͬ�� 
-  87   3                      {
-  88   4                          sync_choose();
-  89   4                      }
-  90   3      
-  91   3                      if(sync_delay_bit == 0)         //�̰���mode�л�
-  92   3                      {
-  93   4                          mode_choose();
-  94   4                      }
-  95   3                      
-  96   3                      delay_ms(50);
-  97   3                      break;
-  98   3                      
-  99   3                  case DownKey:
- 100   3                      down_key();
- 101   3                      delay_ms(50);
- 102   3                      break;
- 103   3                  
- 104   3                  case FanUp:
- 105   3                      fan_up();   
- 106   3                      delay_ms(50); 
- 107   3                      break;
- 108   3                  
- 109   3                  case FanDown:
- 110   3                      fan_down();          
+  77   3                      if(continue_cnt3 == 0)           //����1s�жϣ�����ͬ�� 
+  78   3                      {
+  79   4                          temp_set();
+  80   4                      }
+  81   3                      button_scan_flag = 1;
+  82   3                      button_scan_cnt = 0;
+  83   3                      break;
+  84   3      
+  85   3                  case ModeChoose:                    //����ͬ���л���mode�л�
+  86   3                      continue_cnt2 = 100;
+  87   3                      while((key_val==ModeChoose)&&(continue_cnt2>0))
+  88   3                      {
+  89   4                          continue_cnt2--; 
+  90   4                          delay_ms(10);
+  91   4                      }
+  92   3                      
+  93   3                      if(continue_cnt2 == 0)           //����1s�жϣ�����ͬ�� 
+  94   3                      {
+  95   4                          sync_choose();
+  96   4                      }
+  97   3      
+  98   3                      if(sync_delay_bit == 0)         //�̰���mode�л�
+  99   3                      {
+ 100   4                          mode_choose();
+ 101   4                      }
+ 102   3                      button_scan_flag = 1;
+ 103   3                      button_scan_cnt = 0;
+ 104   3                      delay_ms(50);
+ 105   3                      break;
+ 106   3                      
+ 107   3                  case DownKey:
+ 108   3                      down_key();
+ 109   3                      button_scan_flag = 1;
+ 110   3                      button_scan_cnt = 0;
  111   3                      delay_ms(50);
  112   3                      break;
- 113   3      
- 114   3              }
- 115   2              if(power_bit==1)
- 116   2              {
-C51 COMPILER V9.60.7.0   KEY                                                               01/21/2025 14:39:44 PAGE 3   
+ 113   3                  
+ 114   3                  case FanUp:
+ 115   3                      fan_up();   
+ 116   3                      button_scan_flag = 1;
+C51 COMPILER V9.60.7.0   KEY                                                               04/03/2025 14:49:14 PAGE 3   
 
- 117   3                  sun_dis(DIS_ON);
- 118   3              }
- 119   2              scan_stop_bit = 1;
- 120   2              scan_start_bit = 0;
- 121   2          }
- 122   1      }
- 123          
- 124          void fan_up()
- 125          {
- 126   1          char up_num1 = 0;
- 127   1          up_num1 = wind_num;
- 128   1          
- 129   1          buzzer=buzzer_bit=0;
- 130   1          
- 131   1          up_num1 += 1;
- 132   1          if(up_num1>6)
- 133   1          {
- 134   2              up_num1 = 6;
+ 117   3                      button_scan_cnt = 0;
+ 118   3                      delay_ms(50); 
+ 119   3                      break;
+ 120   3                  
+ 121   3                  case FanDown:
+ 122   3                      fan_down();   
+ 123   3                      button_scan_flag = 1;     
+ 124   3                      button_scan_cnt = 0;  
+ 125   3                      delay_ms(50);
+ 126   3                      break;
+ 127   3      
+ 128   3              }
+ 129   2              if(power_bit==1)
+ 130   2              {
+ 131   3                  sun_dis(DIS_ON);
+ 132   3              }
+ 133   2              scan_stop_bit = 1;
+ 134   2              scan_start_bit = 0;
  135   2          }
- 136   1          
- 137   1          wind_num = up_num1;
- 138   1          wind_crl(wind_num);
- 139   1          wind_dis(wind_num);
- 140   1          
- 141   1          eeprom_data_write();
- 142   1      }
- 143          
- 144          void fan_down()
- 145          {
- 146   1          char down_num1 = 0;
- 147   1          down_num1 = wind_num;
- 148   1          
- 149   1          buzzer=buzzer_bit=0;
+ 136   1      }
+ 137          
+ 138          void fan_up()
+ 139          {
+ 140   1          char up_num1 = 0;
+ 141   1          up_num1 = wind_num;
+ 142   1          
+ 143   1          buzzer=buzzer_bit=0;
+ 144   1          
+ 145   1          up_num1 += 1;
+ 146   1          if(up_num1>6)
+ 147   1          {
+ 148   2              up_num1 = 6;
+ 149   2          }
  150   1          
- 151   1          down_num1 -= 1;
- 152   1          if(down_num1<0)
- 153   1          {
- 154   2              down_num1 = 0;
- 155   2          }
- 156   1      
- 157   1          wind_num = down_num1;
- 158   1          wind_crl(wind_num);
- 159   1          wind_dis(wind_num);
- 160   1          
- 161   1          eeprom_data_write();
- 162   1      }
- 163          
- 164          void up_key()
- 165          {
- 166   1          char up_num2 = 0;
- 167   1          up_num2 = power_num;
- 168   1          
- 169   1          buzzer=buzzer_bit=0;
- 170   1          
- 171   1          up_num2 += 5;
- 172   1          if(up_num2>100)
- 173   1          {
- 174   2              up_num2 = 100;
- 175   2          }
- 176   1          
- 177   1          power_num = up_num2;
- 178   1          power_crl(power_num);
-C51 COMPILER V9.60.7.0   KEY                                                               01/21/2025 14:39:44 PAGE 4   
+ 151   1          wind_num = up_num1;
+ 152   1          wind_crl(wind_num);
+ 153   1          wind_dis(wind_num);
+ 154   1          
+ 155   1          eeprom_data_write();
+ 156   1      }
+ 157          
+ 158          void fan_down()
+ 159          {
+ 160   1          char down_num1 = 0;
+ 161   1          down_num1 = wind_num;
+ 162   1          
+ 163   1          buzzer=buzzer_bit=0;
+ 164   1          
+ 165   1          down_num1 -= 1;
+ 166   1          if(down_num1<0)
+ 167   1          {
+ 168   2              down_num1 = 0;
+ 169   2          }
+ 170   1      
+ 171   1          wind_num = down_num1;
+ 172   1          wind_crl(wind_num);
+ 173   1          wind_dis(wind_num);
+ 174   1          
+ 175   1          eeprom_data_write();
+ 176   1      }
+ 177          
+ 178          void up_key()
+C51 COMPILER V9.60.7.0   KEY                                                               04/03/2025 14:49:14 PAGE 4   
 
- 179   1          num_dis(power_num);
- 180   1          channel_dis(channel_num);
- 181   1          percentage_dis(DIS_ON);
+ 179          {
+ 180   1          char up_num2 = 0;
+ 181   1          up_num2 = power_num;
  182   1          
- 183   1          eeprom_data_write();
- 184   1      }
- 185          
- 186          void down_key()
- 187          {
- 188   1          char down_num2 = 0;
- 189   1          down_num2 = power_num;
+ 183   1          buzzer=buzzer_bit=0;
+ 184   1          
+ 185   1          up_num2 += 5;
+ 186   1          if(up_num2>100)
+ 187   1          {
+ 188   2              up_num2 = 100;
+ 189   2          }
  190   1          
- 191   1          buzzer=buzzer_bit=0;
- 192   1          
- 193   1          down_num2 -= 5;
- 194   1          if(down_num2<0)
- 195   1          {
- 196   2              down_num2 = 0;
- 197   2          }
- 198   1          
- 199   1          power_num = down_num2;
- 200   1          power_crl(power_num);
- 201   1          num_dis(power_num);
- 202   1          channel_dis(channel_num);
- 203   1          percentage_dis(DIS_ON);
+ 191   1          power_num = up_num2;
+ 192   1          power_crl(power_num);
+ 193   1          num_dis(power_num);
+ 194   1          channel_dis(channel_num);
+ 195   1          percentage_dis(DIS_ON);
+ 196   1          
+ 197   1          eeprom_data_write();
+ 198   1      }
+ 199          
+ 200          void down_key()
+ 201          {
+ 202   1          char down_num2 = 0;
+ 203   1          down_num2 = power_num;
  204   1          
- 205   1          eeprom_data_write();
- 206   1      }
- 207          
- 208          void channel_choose()
- 209          {
- 210   1          buzzer=buzzer_bit=0;
- 211   1          
- 212   1          if(channel_num==7)
- 213   1          {
- 214   2              channel_num = 1;
- 215   2          }
- 216   1          else
- 217   1          {
- 218   2              channel_num += 1;
- 219   2          }
- 220   1          channel_dis(channel_num);
- 221   1          if(power_bit==1)
- 222   1          {
- 223   2              sun_dis(DIS_ON);
- 224   2          }
- 225   1          eeprom_data_write();
- 226   1      }
- 227          
- 228          void fan_delay_set()
- 229          {
- 230   1          unsigned char num3 = 0;
- 231   1          num3 = fengshan_delay;
- 232   1          
- 233   1          buzzer=buzzer_bit=0;
- 234   1          delay_ms(500);
- 235   1          while(key_val!=FunctionKey)
- 236   1          {
- 237   2              if(temp_dis_bit)
- 238   2              {
- 239   3                  num_dis(fengshan_delay);
- 240   3                  //Celsius_dis(DIS_ON);
-C51 COMPILER V9.60.7.0   KEY                                                               01/21/2025 14:39:44 PAGE 5   
+ 205   1          buzzer=buzzer_bit=0;
+ 206   1          
+ 207   1          down_num2 -= 5;
+ 208   1          if(down_num2<0)
+ 209   1          {
+ 210   2              down_num2 = 0;
+ 211   2          }
+ 212   1          
+ 213   1          power_num = down_num2;
+ 214   1          power_crl(power_num);
+ 215   1          num_dis(power_num);
+ 216   1          channel_dis(channel_num);
+ 217   1          percentage_dis(DIS_ON);
+ 218   1          
+ 219   1          eeprom_data_write();
+ 220   1      }
+ 221          
+ 222          void channel_choose()
+ 223          {
+ 224   1          buzzer=buzzer_bit=0;
+ 225   1          
+ 226   1          if(channel_num==3)
+ 227   1          {
+ 228   2              channel_num = 1;
+ 229   2          }
+ 230   1          else
+ 231   1          {
+ 232   2              channel_num += 1;
+ 233   2          }
+ 234   1          channel_dis(channel_num);
+ 235   1      
+ 236   1          if(power_bit==1)
+ 237   1          {
+ 238   2              sun_dis(DIS_ON);
+ 239   2          }
+ 240   1          eeprom_data_write();
+C51 COMPILER V9.60.7.0   KEY                                                               04/03/2025 14:49:14 PAGE 5   
 
- 241   3                  
- 242   3              }
- 243   2              if(~temp_dis_bit)
- 244   2              {
- 245   3                  lcd_write_val(addr_tab[ADDR_0B],0x00);
- 246   3      
- 247   3                  lcd_write_val(addr_tab[ADDR_0A],0X00);
- 248   3      
- 249   3                  lcd_write_val(addr_tab[ADDR_07],0X00);
- 250   3      
- 251   3                  lcd_write_val(addr_tab[ADDR_06],0X00);
- 252   3                  
- 253   3                  //Celsius_dis(DIS_ON);
- 254   3                  
- 255   3              }
- 256   2              if(key_val == UpKey)
- 257   2              {
- 258   3                  buzzer=buzzer_bit=0;
- 259   3                  num3+=1;
- 260   3                  if(num3>200)
- 261   3                  {
- 262   4                      num3 = 200;
- 263   4                  }
- 264   3                  fengshan_delay = num3;
+ 241   1      }
+ 242          
+ 243          void fan_delay_set()
+ 244          {
+ 245   1          unsigned char num3 = 0;
+ 246   1          num3 = fengshan_delay;
+ 247   1          
+ 248   1          buzzer=buzzer_bit=0;
+ 249   1          delay_ms(500);
+ 250   1          while(key_val!=ChannelChoose)
+ 251   1          {
+ 252   2              if(temp_dis_bit)
+ 253   2              {
+ 254   3                  num_dis(fengshan_delay);
+ 255   3                  //Celsius_dis(DIS_ON);
+ 256   3                  
+ 257   3              }
+ 258   2              if(~temp_dis_bit)
+ 259   2              {
+ 260   3                  lcd_write_val(addr_tab[ADDR_0B],0x00);
+ 261   3      
+ 262   3                  lcd_write_val(addr_tab[ADDR_0A],0X00);
+ 263   3      
+ 264   3                  lcd_write_val(addr_tab[ADDR_07],0X00);
  265   3      
- 266   3                  delay_ms(100);
- 267   3              }
- 268   2              if(key_val == DownKey)
- 269   2              {
- 270   3                  buzzer=buzzer_bit=0;
- 271   3                  num3-=1;
- 272   3                  if(num3<2)
- 273   3                  {
- 274   4                      num3 = 1;
- 275   4                  }
- 276   3                  fengshan_delay = num3;
- 277   3      
- 278   3                  delay_ms(100);
- 279   3              }
- 280   2          }
- 281   1          temp_delay_bit = 1;
- 282   1          num_dis(power_num);           
- 283   1          channel_dis(channel_num);
- 284   1          Celsius_dis(DIS_OFF);
- 285   1          percentage_dis(DIS_ON);
- 286   1          if(power_bit==1)
- 287   1          {
- 288   2              sun_dis(DIS_ON);
- 289   2          }
- 290   1          eeprom_data_write();
- 291   1      }
- 292          
- 293          void temp_set()
- 294          {
- 295   1          unsigned char num3 = 0;
- 296   1          num3 = temp_num;
- 297   1          
- 298   1          buzzer=buzzer_bit=0;
- 299   1          delay_ms(500);
- 300   1          while(key_val!=ChannelChoose)
- 301   1          {
- 302   2              if(temp_dis_bit)
-C51 COMPILER V9.60.7.0   KEY                                                               01/21/2025 14:39:44 PAGE 6   
+ 266   3                  lcd_write_val(addr_tab[ADDR_06],0X00);
+ 267   3                  
+ 268   3                  //Celsius_dis(DIS_ON);
+ 269   3                  
+ 270   3              }
+ 271   2              if(key_val == UpKey)
+ 272   2              {
+ 273   3                  buzzer=buzzer_bit=0;
+ 274   3                  num3+=1;
+ 275   3                  if(num3>200)
+ 276   3                  {
+ 277   4                      num3 = 200;
+ 278   4                  }
+ 279   3                  fengshan_delay = num3;
+ 280   3      
+ 281   3                  delay_ms(100);
+ 282   3              }
+ 283   2              if(key_val == DownKey)
+ 284   2              {
+ 285   3                  buzzer=buzzer_bit=0;
+ 286   3                  num3-=1;
+ 287   3                  if(num3<2)
+ 288   3                  {
+ 289   4                      num3 = 1;
+ 290   4                  }
+ 291   3                  fengshan_delay = num3;
+ 292   3      
+ 293   3                  delay_ms(100);
+ 294   3              }
+ 295   2              button_scan_flag = 1;
+ 296   2              button_scan_cnt = 0;
+ 297   2          }
+ 298   1          temp_delay_bit = 1;
+ 299   1          num_dis(power_num);           
+ 300   1          channel_dis(channel_num);
+ 301   1          Celsius_dis(DIS_OFF);
+ 302   1          percentage_dis(DIS_ON);
+C51 COMPILER V9.60.7.0   KEY                                                               04/03/2025 14:49:14 PAGE 6   
 
- 303   2              {
- 304   3                  num_dis(temp_num);
- 305   3                  Celsius_dis(DIS_ON);
- 306   3                  
- 307   3              }
- 308   2              if(~temp_dis_bit)
- 309   2              {
- 310   3                  lcd_write_val(addr_tab[ADDR_0B],0x00);
- 311   3      
- 312   3                  lcd_write_val(addr_tab[ADDR_0A],0X00);
- 313   3      
- 314   3                  lcd_write_val(addr_tab[ADDR_07],0X00);
- 315   3      
- 316   3                  lcd_write_val(addr_tab[ADDR_06],0X00);
- 317   3                  
- 318   3                  Celsius_dis(DIS_ON);
- 319   3                  
- 320   3              }
- 321   2              if(key_val == UpKey)
- 322   2              {
- 323   3                  buzzer=buzzer_bit=0;
- 324   3                  num3+=5;
- 325   3                  if(num3>200)
- 326   3                  {
- 327   4                      num3 = 200;
- 328   4                  }
- 329   3                  temp_num = num3;
- 330   3      
- 331   3                  delay_ms(100);
- 332   3              }
- 333   2              if(key_val == DownKey)
- 334   2              {
- 335   3                  buzzer=buzzer_bit=0;
- 336   3                  num3-=5;
- 337   3                  if(num3<50)
- 338   3                  {
- 339   4                      num3 = 50;
- 340   4                  }
- 341   3                  temp_num = num3;
- 342   3      
- 343   3                  delay_ms(100);
- 344   3              }
- 345   2          }
- 346   1          
- 347   1          temp_delay_bit = 1;         //��ʱ1s  ��ֹ�������̰��� 
- 348   1          
- 349   1          num_dis(power_num);           
- 350   1          channel_dis(channel_num);
- 351   1          Celsius_dis(DIS_OFF);
- 352   1          percentage_dis(DIS_ON);
- 353   1          if(power_bit==1)
- 354   1          {
- 355   2              sun_dis(DIS_ON);
- 356   2          }
- 357   1          eeprom_data_write();
- 358   1      }
- 359          
- 360          void mode_choose()
- 361          {
- 362   1          buzzer=buzzer_bit=0;
- 363   1          mode_num += 1;
- 364   1          if(mode_num==6)
-C51 COMPILER V9.60.7.0   KEY                                                               01/21/2025 14:39:44 PAGE 7   
+ 303   1          if(power_bit==1)
+ 304   1          {
+ 305   2              sun_dis(DIS_ON);
+ 306   2          }
+ 307   1          eeprom_data_write();
+ 308   1      }
+ 309          
+ 310          void temp_set()
+ 311          {
+ 312   1          unsigned char num3 = 0;
+ 313   1          num3 = temp_num;
+ 314   1          
+ 315   1          buzzer=buzzer_bit=0;
+ 316   1          alarm_dis(alarm_dis_flag);
+ 317   1          delay_ms(500);
+ 318   1          while(key_val!=FunctionKey)
+ 319   1          {
+ 320   2              if(temp_dis_bit)
+ 321   2              {
+ 322   3                  num_dis(temp_num);
+ 323   3                  Celsius_dis(DIS_ON);
+ 324   3                  
+ 325   3              }
+ 326   2              if(~temp_dis_bit)
+ 327   2              {
+ 328   3                  lcd_write_val(addr_tab[ADDR_0B],0x00);
+ 329   3      
+ 330   3                  lcd_write_val(addr_tab[ADDR_0A],0X00);
+ 331   3      
+ 332   3                  lcd_write_val(addr_tab[ADDR_07],0X00);
+ 333   3      
+ 334   3                  lcd_write_val(addr_tab[ADDR_06],0X00);
+ 335   3                  
+ 336   3                  Celsius_dis(DIS_ON);
+ 337   3                  
+ 338   3              }
+ 339   2              if(key_val == UpKey)
+ 340   2              {
+ 341   3                  buzzer=buzzer_bit=0;
+ 342   3                  num3+=1;
+ 343   3                  if(num3>120)
+ 344   3                  {
+ 345   4                      num3 = 120;
+ 346   4                  }
+ 347   3                  temp_num = num3;
+ 348   3      
+ 349   3                  delay_ms(100);
+ 350   3              }
+ 351   2              if(key_val == DownKey)
+ 352   2              {
+ 353   3                  buzzer=buzzer_bit=0;
+ 354   3                  num3-=1;
+ 355   3                  if(num3<20)
+ 356   3                  {
+ 357   4                      num3 = 20;
+ 358   4                  }
+ 359   3                  temp_num = num3;
+ 360   3      
+ 361   3                  delay_ms(100);
+ 362   3              }
+ 363   2              if(key_val == ModeChoose)
+ 364   2              {
+C51 COMPILER V9.60.7.0   KEY                                                               04/03/2025 14:49:14 PAGE 7   
 
- 365   1          {
- 366   2              mode_num = 1;
- 367   2          }
- 368   1          
- 369   1          lcd_clear();                //һ������
- 370   1          
- 371   1          percentage_dis(DIS_OFF);
- 372   1          mode_dis(DIS_ON);       
- 373   1          num_dis(mode_num);           //��ʾģʽ��źͱ��?
- 374   1            
- 375   1          eeprom_data_read(mode_num);  //��ȡchannel_num��sync_bit��wind_num��power_num
- 376   1              
- 377   1          delay_ms(500);
- 378   1          
- 379   1          lcd_clear();                 //��������
- 380   1          
- 381   1          mode_dis(DIS_OFF);
- 382   1          sun_dis(~sync_bit);
- 383   1          sync_dis(sync_bit);
- 384   1          num_dis(power_num);
- 385   1          channel_dis(channel_num);
- 386   1          percentage_dis(DIS_ON);
- 387   1          wind_dis(wind_num);          //ˢ�½��棺���ȷ��š�ͨ�������ʡ��ٷ
+ 365   3                  buzzer=buzzer_bit=0;
+ 366   3                  alarm_dis_flag = 1 - alarm_dis_flag;
+ 367   3                  alarm_dis(alarm_dis_flag);
+ 368   3                  delay_ms(100);
+ 369   3              }
+ 370   2              button_scan_flag = 1;
+ 371   2              button_scan_cnt = 0;
+ 372   2          }
+ 373   1          
+ 374   1          temp_delay_bit = 1;         //��ʱ1s  ��ֹ�������̰��� 
+ 375   1          
+ 376   1          num_dis(power_num);           
+ 377   1          channel_dis(channel_num);
+ 378   1          Celsius_dis(DIS_OFF);
+ 379   1          percentage_dis(DIS_ON);
+ 380   1          alarm_dis(DIS_OFF);
+ 381   1          if(power_bit==1)
+ 382   1          {
+ 383   2              sun_dis(DIS_ON);
+ 384   2          }
+ 385   1          eeprom_data_write();
+ 386   1      }
+ 387          
+ 388          void mode_choose()
+ 389          {
+ 390   1          buzzer=buzzer_bit=0;
+ 391   1          mode_num += 1;
+ 392   1          if(mode_num==6)
+ 393   1          {
+ 394   2              mode_num = 1;
+ 395   2          }
+ 396   1          
+ 397   1          lcd_clear();                //һ������
+ 398   1          
+ 399   1          percentage_dis(DIS_OFF);
+ 400   1          mode_dis(DIS_ON);       
+ 401   1          num_dis(mode_num);           //��ʾģʽ��źͱ��?
+ 402   1            
+ 403   1          eeprom_data_read(mode_num);  //��ȡchannel_num��sync_bit��wind_num��power_num
+ 404   1              
+ 405   1          delay_ms(500);
+ 406   1          
+ 407   1          lcd_clear();                 //��������
+ 408   1          
+ 409   1          mode_dis(DIS_OFF);
+ 410   1          sun_dis(~sync_bit);
+ 411   1          sync_dis(sync_bit);
+ 412   1          num_dis(power_num);
+ 413   1          channel_dis(channel_num);
+ 414   1          percentage_dis(DIS_ON);
+ 415   1          wind_dis(wind_num);          //ˢ�½��棺���ȷ��š�ͨ�������ʡ��ٷ
              -ֱȡ�������ͬ����־
- 388   1          delay_bit1 = 0;
- 389   1          delay_bit2 = 0;
- 390   1      
- 391   1          sync_judge();               //�ж�ͬ��״̬
- 392   1      
- 393   1          temp_listen();
- 394   1      
- 395   1          eeprom_mode_save();         //��¼ģʽ���?
- 396   1      }
- 397          
- 398          void sync_choose()
- 399          {
- 400   1          buzzer=buzzer_bit=0;
- 401   1      
- 402   1          sync_delay_bit = 1;         //��ʱ1s  ��ֹ�������̰��� 
- 403   1      
- 404   1          sync_bit = ~sync_bit;       //ͬ����or��
- 405   1          sync_dis(sync_bit);
- 406   1      
- 407   1          sync_judge();
- 408   1      
- 409   1          eeprom_data_write();        //��¼ͬ��״̬
- 410   1      }
- 411          
- 412          //void power_key()
- 413          //{
- 414          //   lcd_clear();
- 415          //}
- 416          
- 417          void fan_rotate()
- 418          {
- 419   1          fan_center_dis(DIS_ON);
- 420   1          if((wind_bit == 1)&&(wind_num>0))
- 421   1          {
- 422   2              fan_leaf1_dis(fan_dis_bit);
- 423   2              fan_leaf2_dis(~fan_dis_bit);
- 424   2          }
- 425   1          else
-C51 COMPILER V9.60.7.0   KEY                                                               01/21/2025 14:39:44 PAGE 8   
+ 416   1          delay_bit1 = 0;
+ 417   1          delay_bit2 = 0;
+ 418   1      
+ 419   1          sync_judge();               //�ж�ͬ��״̬
+ 420   1      
+ 421   1          temp_listen();
+ 422   1      
+ 423   1          eeprom_mode_save();         //��¼ģʽ���?
+ 424   1      }
+ 425          
+C51 COMPILER V9.60.7.0   KEY                                                               04/03/2025 14:49:14 PAGE 8   
 
- 426   1          {
- 427   2              fan_leaf1_dis(DIS_ON);
- 428   2              fan_leaf2_dis(DIS_OFF);
- 429   2          }
- 430   1      }
- 431          
- 432          uint8_t power_on()
- 433          {
- 434   1          if(scan_start_bit == 1)
- 435   1          {
- 436   2              if(key_val == PowerKey)
- 437   2              {
- 438   3                  return 0;
- 439   3              }
- 440   2          }
- 441   1          return 1;
- 442   1      }
- 443          
- 444          void power_off()
- 445          {
- 446   1          uint8_t continue_cnt;
- 447   1          if(scan_start_bit == 1)
- 448   1          {
- 449   2              continue_cnt = 100;
- 450   2              while((key_val==PowerKey)&&(continue_cnt>0))
- 451   2              {
- 452   3                  continue_cnt--; 
- 453   3                  delay_ms(10);
- 454   3              }
- 455   2              if(continue_cnt == 0)           //����1s�жϣ�����ͬ�� 
- 456   2              {
- 457   3                  lcd_clear();
- 458   3                  power_bit = 0;
- 459   3                  sun_dis(DIS_OFF);
- 460   3                  PWMStop();
- 461   3                  on_off = 1;
- 462   3              }
- 463   2          }
- 464   1      
- 465   1      }
+ 426          void sync_choose()
+ 427          {
+ 428   1          buzzer=buzzer_bit=0;
+ 429   1      
+ 430   1          sync_delay_bit = 1;         //��ʱ1s  ��ֹ�������̰��� 
+ 431   1      
+ 432   1          sync_bit = ~sync_bit;       //ͬ����or��
+ 433   1          sync_dis(sync_bit);
+ 434   1      
+ 435   1          sync_judge();
+ 436   1      
+ 437   1          eeprom_data_write();        //��¼ͬ��״̬
+ 438   1      }
+ 439          
+ 440          //void power_key()
+ 441          //{
+ 442          //   lcd_clear();
+ 443          //}
+ 444          
+ 445          void fan_rotate()
+ 446          {
+ 447   1          fan_center_dis(DIS_ON);
+ 448   1          if((wind_bit == 1)&&(wind_num>0))
+ 449   1          {
+ 450   2              fan_leaf1_dis(fan_dis_bit);
+ 451   2              fan_leaf2_dis(~fan_dis_bit);
+ 452   2          }
+ 453   1          else
+ 454   1          {
+ 455   2              fan_leaf1_dis(DIS_ON);
+ 456   2              fan_leaf2_dis(DIS_OFF);
+ 457   2          }
+ 458   1      }
+ 459          
+ 460          uint8_t power_on()
+ 461          {
+ 462   1          if(scan_start_bit == 1)
+ 463   1          {
+ 464   2              if(key_val == PowerKey)
+ 465   2              {
+ 466   3                  button_scan_flag = 1;
+ 467   3                  button_scan_cnt = 0;
+ 468   3                  return 0;
+ 469   3              }
+ 470   2          }
+ 471   1          return 1;
+ 472   1      }
+ 473          
+ 474          void power_off()
+ 475          {
+ 476   1          uint8_t continue_cnt;
+ 477   1          if(scan_start_bit == 1)
+ 478   1          {
+ 479   2              continue_cnt = 100;
+ 480   2              while((key_val==PowerKey)&&(continue_cnt>0))
+ 481   2              {
+ 482   3                  continue_cnt--; 
+ 483   3                  delay_ms(10);
+ 484   3              }
+ 485   2              if(continue_cnt == 0)           //����1s�жϣ�����ͬ�� 
+ 486   2              {
+ 487   3                  lcd_clear();
+C51 COMPILER V9.60.7.0   KEY                                                               04/03/2025 14:49:14 PAGE 9   
+
+ 488   3                  power_bit = 0;
+ 489   3                  sun_dis(DIS_OFF);
+ 490   3                  PWMStop();
+ 491   3                  on_off = 1;
+ 492   3              }
+ 493   2          }
+ 494   1      
+ 495   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1180    ----
+   CODE SIZE        =   1246    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =     11       7
+   XDATA SIZE       =     12       6
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

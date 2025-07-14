@@ -12,6 +12,8 @@ extern bit scan_start_bit;
 extern bit delay_bit1;
 extern bit delay_bit2;
 extern bit delay_bit3;
+extern bit button_scan_flag;
+extern uint16_t button_scan_cnt;
 
 sbit tempchannel1 = P1^7;
 sbit tempchannel2 = P2^1;
@@ -23,7 +25,7 @@ extern bit wind_bit;
 extern uint8_t channel_num;
 extern bit previous_value;
 extern uint16_t pwm_adc_val;
-extern uint16_t ntc6_adc_val;
+extern volatile uint16_t ntc6_val;
 extern uint8_t temp_listen_cnt;
 extern bit temp_listen_bit;
 extern uint8_t fengshan_delay;

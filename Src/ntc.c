@@ -130,6 +130,7 @@ uint16_t temp_table[121]={
 
 };
 	 
+uint16_t adc_val= 0;
 
 uint8_t LookupTable(uint16_t *temptab,uint8_t tablenum,uint16_t temp)
 {
@@ -147,14 +148,12 @@ uint16_t get_temp(uint8_t channle_x)
 {
     uint8_t t;
     uint8_t times = 10;
-    uint16_t adc_val= 0;
-    uint16_t temp_val;
+
     for(t=0;t<times;t++)
 		{
 			adc_val += Get_ADC12bitResult(channle_x);
 		}	       
     adc_val = adc_val/times;
-	printf("THE value of adc_val is %d \r\n",(int)adc_val);
-    temp_val = LookupTable(temp_table,121,adc_val);
-    return temp_val;
+	//printf("THE value of adc_val is %d \r\n",(int)adc_val);
+    return adc_val;
 }

@@ -81,38 +81,40 @@ void master_pwm_adc_listen()
 
 void temp_listen()
 {   
-    static uint8_t i = 0;
-    static uint16_t leijia = 0;
-    static uint16_t ntc6_val = 0;
-    static uint8_t ntc6_temp = 0;
-    leijia = leijia + ntc6_adc_val;
-    i++;
-    if(i == 10)
+    uint8_t temp_val;
+    if( temp_listen_bit == 1)
     {
-        ntc6_val = leijia/i;
-        i = 0;
-        leijia = 0;
-    }
+        temp_val = LookupTable(temp_table,121,ntc6_val);
+        printf("THE value of ntc6_val is %d \r\n",(int)temp_val);
 
-        ntc6_temp = LookupTable(temp_table,121,ntc6_val);
-
-        printf("THE value of ntc6_val is %d \r\n",(int)ntc6_temp);
-
-
-    if(ntc6_temp>=temp_num)
-    {
-        alarm_dis(DIS_ON);
-        P05 = 1;
-        P54 = temp_dis_bit;
+        if(temp_val>=temp_num)
+        {
+            if( alarm_dis_flag == 0 )
+            {
+                tempchannel3 = 1;
+            }
+        }
+        
+        if(temp_val<temp_num-1)
+        {
+            if( alarm_dis_flag == 0 )
+            {
+                tempchannel3 = 0;
+            }
+            if( alarm_dis_flag == 1 )
+            {
+                if( power_bit == 1 )
+                {
+                    tempchannel3 = 0;
+                }else
+                {
+                    tempchannel3 = 1;
+                }
+            }  
+        }
+        temp_listen_bit = 0;
     }
     
-    if(ntc6_temp<temp_num)    
-    {
-        alarm_dis(DIS_OFF);
-        P05 = 0;
-        P54 = 1;
-
-    }
 }
     
 //    if(sync_bit==1)

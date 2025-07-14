@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   MAIN                                                              01/21/2025 14:39:44 PAGE 1   
+C51 COMPILER V9.60.7.0   MAIN                                                              04/03/2025 14:49:14 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
@@ -56,13 +56,13 @@ line level    source
   46   2              sync_bit = 1;
   47   2              wind_num = 3;
   48   2              power_num = 50;
-  49   2              temp_num = 100;//��ȡchannel_num��sync_bit��wind_num��power_num��temp_num
+  49   2              temp_num = 45;//��ȡchannel_num��sync_bit��wind_num��power_num��temp_num
   50   2              fengshan_delay = 15;
   51   2              eeprom_mode_save();
   52   2              for(y = 1;y<6;y++) 
   53   2              
   54   2              {
-C51 COMPILER V9.60.7.0   MAIN                                                              01/21/2025 14:39:44 PAGE 2   
+C51 COMPILER V9.60.7.0   MAIN                                                              04/03/2025 14:49:14 PAGE 2   
 
   55   3                  mode_num = y;
   56   3                  eeprom_data_write();
@@ -91,31 +91,44 @@ line level    source
   79   1          
   80   1          while(1)
   81   1          {
-  82   2              button_scan();
-  83   2              fan_rotate();
-  84   2              master_pwm_adc_listen();
-  85   2              temp_listen();
-  86   2              printf("The value of pwm_adc_val is %d \r\n",(int)pwm_adc_val);
-  87   2              printf("The value of ntc6_adc_val is %d \r\n",(int)ntc6_adc_val);
-  88   2              sync_fan_delay_listen();
-  89   2              power_off();
-  90   2              if(on_off == 1)
-  91   2              {
-  92   3                  buzzer=buzzer_bit=0;
-  93   3                  P24 = P25 = P26 = 1;
-  94   3                  P43 = P44 = 1;
-  95   3                  P20 = 1;
-  96   3                  goto restart;   
-  97   3              }
-  98   2              
-  99   2          }
- 100   1      }
- 101          
+  82   2              if(key_val == PowerKey)
+  83   2              {
+  84   3                  buzzer=buzzer_bit=0;
+  85   3                  button_scan_flag = 1;
+  86   3                  button_scan_cnt = 0;
+  87   3              }
+  88   2              if( button_scan_flag == 1)
+  89   2              {
+  90   3                  button_scan();
+  91   3                  P24 = P25 = P26 = 0;
+  92   3                  P43 = P44 = 0;
+  93   3              }
+  94   2              fan_rotate();
+  95   2              master_pwm_adc_listen();
+  96   2              temp_listen();
+  97   2              sync_fan_delay_listen();
+  98   2              power_off();
+  99   2              //printf("The value of key is %d \r\n",(int)key_val);
+ 100   2              if(on_off == 1)
+ 101   2              {
+ 102   3                  buzzer=buzzer_bit=0;
+ 103   3                  P24 = P25 = P26 = 1;
+ 104   3                  P43 = P44 = 1;
+ 105   3                  P20 = 1;
+ 106   3                  tempchannel1 = tempchannel2 = tempchannel3 = 1;
+ 107   3                  goto restart;   
+ 108   3              }
+ 109   2              delay_ms(5);
+ 110   2          }
+ 111   1      }
+ 112          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    288    ----
-   CONSTANT SIZE    =    100    ----
+   CODE SIZE        =    285    ----
+C51 COMPILER V9.60.7.0   MAIN                                                              04/03/2025 14:49:14 PAGE 3   
+
+   CONSTANT SIZE    =     31    ----
    XDATA SIZE       =   ----       1
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
