@@ -16,6 +16,7 @@ bit sync_bit = 0;
 uint8_t wind_num = 0;
 uint8_t power_num = 0;
 uint8_t mode_num = 0;
+uint8_t power_statu = 0;
 uint8_t temp_num = 80;
 
 uint8_t key_val = 0;
@@ -300,7 +301,8 @@ void mode_choose()
     delay_ms(500);
     
     lcd_clear();                 //二次清屏
-    
+    delay_ms(30);
+
     mode_dis(DIS_OFF);
     sun_dis(~sync_bit);
     sync_dis(sync_bit);
@@ -377,6 +379,8 @@ void power_off()
         }
         if(continue_cnt == 0)           //长按1s判断，开启同步 
         {
+            power_statu = 0;
+            eeprom_mode_save();
             lcd_clear();
             power_bit = 0;
             sun_dis(DIS_OFF);

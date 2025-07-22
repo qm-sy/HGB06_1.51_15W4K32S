@@ -85,10 +85,12 @@ void ISP_earse(uint16_t addr)
 void eeprom_mode_save()
 {
     uint16_t addr = 0x0000;
+    uint16_t addr2 = 0x0002;
     
     ISP_earse(addr);
     ISP_write(addr,mode_num);  
-    
+    ISP_write(addr2,power_statu);  
+
     buzzer=buzzer_bit=0;
 }
 
@@ -120,7 +122,7 @@ void ISP_data_init()
 {  
     mode_num = ISP_read(0x0000);
     eeprom_data_read(mode_num);
-    
+
     sun_dis(power_bit);
     percentage_dis(DIS_ON);   
     sync_dis(sync_bit);

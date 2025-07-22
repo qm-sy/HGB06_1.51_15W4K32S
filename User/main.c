@@ -36,11 +36,13 @@ void main()
     PWMStop();
       
     printf("======== code start ========\r\n");  
-
+    lcd_init();  
     x = ISP_read(0x0000);
+    power_statu = ISP_read(0x0002);
     if((x!=1)&&(x!=2)&&(x!=3)&&(x!=4)&&(x!=5))
     {
         mode_num = 1;
+        power_statu = 0;
         channel_num = 1;
         sync_bit = 1;
         wind_num = 3;
@@ -53,19 +55,32 @@ void main()
             mode_num = y;
             eeprom_data_write();
          }
+    }else
+    {
+        mode_num = x;
     }
     
     restart:
     delay_ms(1000);
-    
+
+    if( power_statu == 1 )
+    {
+        on_off = 0;
+    }else
+    {
+        on_off = 1;
+    }
+
     while(on_off)
     {
         on_off = power_on();
     }  
+    power_statu = 1;
+    eeprom_mode_save();
     P20 = 0; 
-
+    delay_ms(10);
     led_init();    
-    lcd_init();  
+
     ISP_data_init();
     percentage_dis(DIS_ON);
     if(power_bit==1)
