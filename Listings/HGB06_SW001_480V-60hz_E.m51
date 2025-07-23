@@ -1,11 +1,11 @@
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    07/23/2025  10:10:14  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    07/23/2025  10:13:39  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
 D:\APP\KEIL_V5\C51\BIN\BL51.EXE .\Output\STARTUP.obj, .\Output\adc.obj, .\Output\delay.obj, .\Output\eeprom.obj, .\Outpu
 >> t\gpio.obj, .\Output\modbus.obj, .\Output\ntc.obj, .\Output\pwm.obj, .\Output\timer.obj, .\Output\uart.obj, .\Output\
->> screen.obj, .\Output\key.obj, .\Output\sync.obj, .\Output\main.obj TO .\Output\HGB06_V001_C_Main PRINT (.\Listings\HG
->> B06_V001_C_Main.m51) RAMSIZE (256)
+>> screen.obj, .\Output\key.obj, .\Output\sync.obj, .\Output\main.obj TO .\Output\HGB06_SW001_480V-60hz_E PRINT (.\Listi
+>> ngs\HGB06_SW001_480V-60hz_E.m51) RAMSIZE (256)
 
 
 MEMORY MODEL: LARGE
@@ -39,7 +39,7 @@ INPUT MODULES INCLUDED:
   D:\APP\KEIL_V5\C51\LIB\C51L.LIB (?C?CCASE)
 
 
-LINK MAP OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
+LINK MAP OF MODULE:  .\Output\HGB06_SW001_480V-60hz_E (?C_STARTUP)
 
 
             TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
@@ -59,7 +59,7 @@ LINK MAP OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
             * * * * * * *  X D A T A   M E M O R Y  * * * * * * *
             XDATA   0000H     00F2H     UNIT         ?XD?NTC
             XDATA   00F2H     0029H     UNIT         _XDATA_GROUP_
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 2
 
 
             XDATA   011BH     0018H     UNIT         ?XD?SCREEN
@@ -119,7 +119,7 @@ LINK MAP OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
             CODE    12D8H     0021H     UNIT         ?PR?EXTERNAL_24V_LISTEN?SYNC
             CODE    12F9H     0020H     UNIT         ?PR?_DELAY_MS?DELAY
             CODE    1319H     001FH     UNIT         ?PR?_ISP_WRITE?EEPROM
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 3
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 3
 
 
             CODE    1338H     001FH     UNIT         ?PR?GPIOINIT?GPIO
@@ -156,7 +156,7 @@ LINK MAP OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
 
 
 
-OVERLAY MAP OF MODULE:   .\Output\HGB06_V001_C_Main (?C_STARTUP)
+OVERLAY MAP OF MODULE:   .\Output\HGB06_SW001_480V-60hz_E (?C_STARTUP)
 
 
 SEGMENT                                   BIT_GROUP          DATA_GROUP          XDATA_GROUP
@@ -179,7 +179,7 @@ SEGMENT                                   BIT_GROUP          DATA_GROUP         
   +--> ?PR?PRINTF?PRINTF
   +--> ?PR?LCD_INIT?SCREEN
   +--> ?PR?_ISP_READ?EEPROM
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 4
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 4
 
 
   +--> ?PR?EEPROM_MODE_SAVE?EEPROM
@@ -239,7 +239,7 @@ SEGMENT                                   BIT_GROUP          DATA_GROUP         
 ?PR?ISP_DATA_INIT?EEPROM               -----    -----      -----    -----      -----    -----
   +--> ?PR?_ISP_READ?EEPROM
   +--> ?PR?_EEPROM_DATA_READ?EEPROM
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 5
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 5
 
 
   +--> ?PR?SUN_DIS?SCREEN
@@ -299,7 +299,7 @@ SEGMENT                                   BIT_GROUP          DATA_GROUP         
   +--> ?PR?FAN_DOWN?KEY
   +--> ?PR?SUN_DIS?SCREEN
 
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 6
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 6
 
 
 ?PR?UP_KEY?KEY                         -----    -----      -----    -----      -----    -----
@@ -359,7 +359,7 @@ SEGMENT                                   BIT_GROUP          DATA_GROUP         
   +--> ?PR?_LOOKUPTABLE?NTC
 
 ?PR?_LOOKUPTABLE?NTC                   -----    -----      -----    -----      00FAH    0008H
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 7
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 7
 
 
 
@@ -414,12 +414,12 @@ SEGMENT                                   BIT_GROUP          DATA_GROUP         
 
 
 
-SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
+SYMBOL TABLE OF MODULE:  .\Output\HGB06_SW001_480V-60hz_E (?C_STARTUP)
 
   VALUE           TYPE          NAME
   ----------------------------------
 
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 8
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 8
 
 
   -------         MODULE        ?C_STARTUP
@@ -479,7 +479,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:124BH         PUBLIC        _Get_ADC12bitResult
   D:00D0H         PUBLIC        PSW
   -------         PROC          ADCINIT
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 9
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 9
 
 
   C:1589H         LINE#         16
@@ -539,7 +539,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:1537H         LINE#         22
   C:1537H         LINE#         23
   C:1540H         LINE#         24
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 10
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 10
 
 
   C:1540H         LINE#         25
@@ -599,7 +599,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:1376H         LINE#         21
   C:1376H         LINE#         22
   C:1376H         LINE#         25
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 11
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 11
 
 
   C:1379H         LINE#         26
@@ -659,7 +659,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:0D80H         LINE#         95
   C:0D80H         LINE#         96
   C:0D80H         LINE#         100
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 12
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 12
 
 
   C:0D88H         LINE#         101
@@ -719,7 +719,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   D:0096H         PUBLIC        P2M0
   D:0091H         PUBLIC        P1M1
   D:0080H         PUBLIC        P0
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 13
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 13
 
 
   D:00B2H         PUBLIC        P3M0
@@ -779,7 +779,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   D:0088H         PUBLIC        TCON
   C:0E70H         PUBLIC        _get_temp
   C:0CFFH         PUBLIC        _LookupTable
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 14
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 14
 
 
   D:00D0H         PUBLIC        PSW
@@ -839,7 +839,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   D:00F5H         PUBLIC        PWMCR
   D:00A8H         PUBLIC        IE
   D:00B8H         PUBLIC        IP
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 15
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 15
 
 
   C:15C2H         PUBLIC        PWMStop
@@ -899,7 +899,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:0F75H         LINE#         47
   C:0F79H         LINE#         48
   C:0F7BH         LINE#         50
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 16
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 16
 
 
   C:0F7BH         LINE#         51
@@ -959,7 +959,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   D:008DH         PUBLIC        TH1
   D:00D4H         PUBLIC        T3H
   D:008AH         PUBLIC        TL0
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 17
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 17
 
 
   X:013DH         PUBLIC        tim1_t
@@ -1019,7 +1019,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:112DH         LINE#         56
   C:1133H         LINE#         58
   C:113CH         LINE#         59
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 18
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 18
 
 
   C:113FH         LINE#         61
@@ -1079,7 +1079,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:09CEH         LINE#         121
   C:09D0H         LINE#         122
   C:09D0H         LINE#         123
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 19
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 19
 
 
   C:09D0H         LINE#         124
@@ -1139,7 +1139,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:0A5DH         LINE#         188
   C:0A5FH         LINE#         189
   C:0A61H         LINE#         190
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 20
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 20
 
 
   C:0A63H         LINE#         191
@@ -1199,7 +1199,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   D:00D7H         PUBLIC        T2L
   B:0023H.2       PUBLIC        busy_bit
   C:150DH         PUBLIC        Uart1Init
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 21
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 21
 
 
   D:00D0H         PUBLIC        PSW
@@ -1259,7 +1259,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:15B9H         LINE#         55
   -------         ENDPROC       _PUTCHAR
   -------         ENDMOD        UART
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 22
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 22
 
 
 
@@ -1319,7 +1319,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:14E6H         LINE#         27
   C:14EBH         LINE#         28
   C:14EDH         LINE#         30
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 23
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 23
 
 
   C:14F0H         LINE#         32
@@ -1379,7 +1379,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   -------         ENDPROC       _TM1722_WRITE_BYTE
   -------         PROC          _NUM_DIS
   X:00F6H         SYMBOL        num
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 24
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 24
 
 
   -------         DO            
@@ -1439,7 +1439,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:0061H         LINE#         145
   C:0068H         LINE#         146
   C:006AH         LINE#         148
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 25
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 25
 
 
   C:006AH         LINE#         149
@@ -1499,7 +1499,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:0B23H         LINE#         215
   C:0B23H         LINE#         217
   C:0B30H         LINE#         218
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 26
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 26
 
 
   -------         ENDPROC       _CHANNEL_DIS
@@ -1559,7 +1559,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:1460H         LINE#         298
   -------         ENDPROC       MODE_DIS
   -------         PROC          PERCENTAGE_DIS
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 27
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 27
 
 
   B:0021H.5       SYMBOL        on_off
@@ -1619,7 +1619,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   D:00F8H         PUBLIC        P7
   C:0DFAH         PUBLIC        mode_choose
   D:00A8H         PUBLIC        IE
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 28
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 28
 
 
   C:1085H         PUBLIC        up_key
@@ -1679,7 +1679,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:0B94H         LINE#         59
   C:0B94H         LINE#         60
   C:0B97H         LINE#         61
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 29
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 29
 
 
   C:0B97H         LINE#         62
@@ -1739,7 +1739,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:1211H         LINE#         123
   C:1211H         LINE#         125
   C:1216H         LINE#         126
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 30
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 30
 
 
   C:1219H         LINE#         127
@@ -1799,7 +1799,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:10CBH         LINE#         183
   C:10CBH         LINE#         184
   C:10CDH         LINE#         185
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 31
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 31
 
 
   C:10CDH         LINE#         187
@@ -1859,7 +1859,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:092EH         LINE#         248
   C:0934H         LINE#         249
   C:0934H         LINE#         250
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 32
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 32
 
 
   C:0937H         LINE#         251
@@ -1919,7 +1919,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:0E6DH         LINE#         318
   -------         ENDPROC       MODE_CHOOSE
   -------         PROC          SYNC_CHOOSE
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 33
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 33
 
 
   C:1522H         LINE#         321
@@ -1979,7 +1979,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:1042H         LINE#         381
   C:1044H         LINE#         382
   C:1049H         LINE#         383
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 34
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 34
 
 
   C:104CH         LINE#         384
@@ -2039,7 +2039,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:0FBEH         LINE#         31
   C:0FBEH         LINE#         32
   C:0FC0H         LINE#         34
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 35
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 35
 
 
   C:0FC0H         LINE#         36
@@ -2099,7 +2099,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:1068H         LINE#         90
   C:106AH         LINE#         91
   C:106EH         LINE#         92
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 36
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 36
 
 
   C:106EH         LINE#         94
@@ -2159,7 +2159,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:07DAH         LINE#         25
   C:07DDH         LINE#         26
   C:07E0H         LINE#         27
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 37
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 37
 
 
   C:07E3H         LINE#         28
@@ -2219,7 +2219,7 @@ SYMBOL TABLE OF MODULE:  .\Output\HGB06_V001_C_Main (?C_STARTUP)
   C:08AFH         LINE#         88
   C:08B3H         LINE#         89
   C:08B5H         LINE#         90
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:10:14  PAGE 38
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  07/23/2025  10:13:39  PAGE 38
 
 
   -------         ENDPROC       MAIN

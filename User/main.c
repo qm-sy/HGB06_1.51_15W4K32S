@@ -26,7 +26,7 @@ void main()
     Tim1Init();
     Tim3Init();
     IT0 = 1;   //下降沿触发过零检测信号
-    EX0 = 1;
+    
     EA = 1;
     P42 = 0;
     P23 = 0;
@@ -36,7 +36,7 @@ void main()
     PWMStop();
       
     printf("======== code start ========\r\n");  
-
+    lcd_init(); 
     x = ISP_read(0x0000);
     if((x!=1)&&(x!=2)&&(x!=3)&&(x!=4)&&(x!=5))
     {
@@ -62,10 +62,10 @@ void main()
     {
         on_off = power_on();
     }  
+    EX0 = 1;
     P20 = 0; 
 
-    led_init();    
-    lcd_init();  
+    led_init();     
     ISP_data_init();
     percentage_dis(DIS_ON);
     if(power_bit==1)

@@ -1,10 +1,10 @@
-C51 COMPILER V9.60.7.0   DELAY                                                             01/10/2025 23:04:24 PAGE 1   
+C51 COMPILER V9.60.7.0   DELAY                                                             07/23/2025 17:08:03 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE DELAY
 OBJECT MODULE PLACED IN .\Output\delay.obj
-COMPILER INVOKED BY: D:\APP\Keil_STM32\C51\BIN\C51.EXE Src\delay.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\Inc;D:\APP\Ke
-                    -il_v5\C51\INC) DEBUG OBJECTEXTEND PRINT(.\Listings\delay.lst) OBJECT(.\Output\delay.obj)
+COMPILER INVOKED BY: D:\APP\Keil_v5\C51\BIN\C51.EXE Src\delay.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\Inc;D:\APP\Keil_
+                    -v5\C51\INC) DEBUG OBJECTEXTEND PRINT(.\Listings\delay.lst) OBJECT(.\Output\delay.obj)
 
 line level    source
 

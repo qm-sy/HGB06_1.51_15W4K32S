@@ -17,7 +17,7 @@ bit delay_bit1 = 0;
 bit delay_bit2 = 0;
 bit delay_bit3 = 0;
 uint8_t channel_num = 1;
-uint16_t tim1_t = 58400;
+uint16_t tim1_t = 59880;
 void Tim0Init()         //11.0592Mhz  1ms
 {
     AUXR |= 0X80;       //修改计数速率，定时器时钟设置为12T模式
@@ -214,7 +214,7 @@ void power_crl(uint8_t power_num)
         ET1 = 0;
     }
     
-    tim1_t = power_num*64+58400;
+    tim1_t = power_num*39+59880;
     
 //    TL1 = tim1_t;                   //设置定时初始值
 //    TH1 = tim1_t>>8;				//设置定时初始值
