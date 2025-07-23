@@ -73,7 +73,7 @@ void main()
 
     while(on_off)
     {
-        on_off = power_on();
+        on_off = power_on(); 
     }  
     power_statu = 1;
     eeprom_mode_save();
