@@ -26,7 +26,7 @@ void main()
     Tim1Init();
     Tim3Init();
     IT0 = 1;   //下降沿触发过零检测信号
-    EX0 = 1;
+
     EA = 1;
     P42 = 0;
     P23 = 0;
@@ -75,6 +75,7 @@ void main()
     {
         on_off = power_on(); 
     }  
+    EX0 = 1;
     power_statu = 1;
     eeprom_mode_save();
     P20 = 0; 
