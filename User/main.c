@@ -25,6 +25,8 @@ void main()
     Tim0Init();
     Tim1Init();
     Tim3Init();
+    tempchannel1 = tempchannel2 = tempchannel3 = 1;   
+    
     IT0 = 1;   //下降沿触发过零检测信号
 
     EA = 1;

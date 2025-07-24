@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   KEY                                                               07/23/2025 17:17:43 PAGE 1   
+C51 COMPILER V9.60.7.0   KEY                                                               07/24/2025 09:30:20 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE KEY
@@ -62,7 +62,7 @@ line level    source
   52   4                          delay_ms(10);
   53   4                      }
   54   3                      if(continue_cnt1 == 0)           //长按1s判断，开启同步 
-C51 COMPILER V9.60.7.0   KEY                                                               07/23/2025 17:17:43 PAGE 2   
+C51 COMPILER V9.60.7.0   KEY                                                               07/24/2025 09:30:20 PAGE 2   
 
   55   3                      {
   56   4                          temp_set();
@@ -126,7 +126,7 @@ line level    source
  114          {
  115   1          char up_num1 = 0;
  116   1          up_num1 = wind_num;
-C51 COMPILER V9.60.7.0   KEY                                                               07/23/2025 17:17:43 PAGE 3   
+C51 COMPILER V9.60.7.0   KEY                                                               07/24/2025 09:30:20 PAGE 3   
 
  117   1          
  118   1          buzzer=buzzer_bit=0;
@@ -190,7 +190,7 @@ line level    source
  176          {
  177   1          char down_num2 = 0;
  178   1          down_num2 = power_num;
-C51 COMPILER V9.60.7.0   KEY                                                               07/23/2025 17:17:43 PAGE 4   
+C51 COMPILER V9.60.7.0   KEY                                                               07/24/2025 09:30:20 PAGE 4   
 
  179   1          
  180   1          buzzer=buzzer_bit=0;
@@ -254,7 +254,7 @@ line level    source
  238   3                  lcd_write_val(addr_tab[ADDR_07],0X00);
  239   3      
  240   3                  lcd_write_val(addr_tab[ADDR_06],0X00);
-C51 COMPILER V9.60.7.0   KEY                                                               07/23/2025 17:17:43 PAGE 5   
+C51 COMPILER V9.60.7.0   KEY                                                               07/24/2025 09:30:20 PAGE 5   
 
  241   3                  
  242   3                  Celsius_dis(DIS_ON);
@@ -318,7 +318,7 @@ line level    source
  300   1              
  301   1          delay_ms(500);
  302   1          
-C51 COMPILER V9.60.7.0   KEY                                                               07/23/2025 17:17:43 PAGE 6   
+C51 COMPILER V9.60.7.0   KEY                                                               07/24/2025 09:30:20 PAGE 6   
 
  303   1          lcd_clear();                 //二次清屏
  304   1          delay_ms(30);
@@ -382,7 +382,7 @@ line level    source
  362   2              {
  363   3                  return 0;
  364   3              }
-C51 COMPILER V9.60.7.0   KEY                                                               07/23/2025 17:17:43 PAGE 7   
+C51 COMPILER V9.60.7.0   KEY                                                               07/24/2025 09:30:20 PAGE 7   
 
  365   2          }
  366   1          return 1;

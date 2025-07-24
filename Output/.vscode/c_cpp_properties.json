@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "d:/workspace/code_test/HGB06_1.51_15W4K32S/Output/libRich",
+                "c:/Users/qm/.vscode/extensions/richintelligent.richextension-3.1.11/include",
+                "c:/Users/qm/.vscode/extensions/richintelligent.richextension-3.1.11/include/Atmel"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE",
+                "interrupt=",
+                "code=",
+                "xdata="
+            ],
+            "cStandard": "c89",
+            "forcedInclude": [
+                "c:/Users/qm/.vscode/extensions/richintelligent.richextension-3.1.11/include/libRichForced.h"
+            ]
+        }
+    ],
+    "version": 4
+}
