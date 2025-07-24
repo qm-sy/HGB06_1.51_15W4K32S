@@ -7,7 +7,11 @@
                 "D:\\APP\\Keil_v5\\C51\\INC",
                 "d:\\workspace\\code_test\\HGB06_1.51_15W4K32S",
                 "d:\\workspace\\code_test\\HGB06_1.51_15W4K32S\\Src",
-                "d:\\workspace\\code_test\\HGB06_1.51_15W4K32S\\User"
+                "d:\\workspace\\code_test\\HGB06_1.51_15W4K32S\\User",
+                "${workspaceFolder}/**",
+                "d:/workspace/code_test/HGB06_1.51_15W4K32S/libRich",
+                "c:/Users/qm/.vscode/extensions/richintelligent.richextension-3.1.11/include",
+                "c:/Users/qm/.vscode/extensions/richintelligent.richextension-3.1.11/include/Atmel"
             ],
             "defines": [
                 "__C51__",
