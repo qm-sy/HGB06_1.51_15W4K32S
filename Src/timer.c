@@ -113,7 +113,7 @@ void Tim3Isr(void) interrupt 19
     if((delay_bit1 == 1)&&(delay_bit2 == 1))
     {
         fan_delay_cnt++;
-        if(fan_delay_cnt==12000)
+        if(fan_delay_cnt==1500)
         {
             fan_delay_cnt = 0;
             delay_bit1 = 0;
