@@ -58,9 +58,11 @@ void sync_fan_delay_listen()
     
     if(delay_bit3 == 1)
     {  
-        printf("here");
-        wind_bit = 0; 
-        PWMStop();
+        if(sync_bit == 1)
+        {
+            wind_bit = 0; 
+            PWMStop();
+        }
         delay_bit3 = 0;
     }
 }

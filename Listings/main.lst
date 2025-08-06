@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   MAIN                                                              07/24/2025 09:25:53 PAGE 1   
+C51 COMPILER V9.60.7.0   MAIN                                                              08/01/2025 09:15:43 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   52   2              
   53   2              {
   54   3                  mode_num = y;
-C51 COMPILER V9.60.7.0   MAIN                                                              07/24/2025 09:25:53 PAGE 2   
+C51 COMPILER V9.60.7.0   MAIN                                                              08/01/2025 09:15:43 PAGE 2   
 
   55   3                  eeprom_data_write();
   56   3               }
@@ -74,42 +74,48 @@ line level    source
   62   1          while(on_off)
   63   1          {
   64   2              on_off = power_on();
-  65   2          }  
-  66   1          EX0 = 1;
-  67   1          P20 = 0; 
-  68   1      
-  69   1          led_init();     
-  70   1          ISP_data_init();
-  71   1          percentage_dis(DIS_ON);
-  72   1          if(power_bit==1)
-  73   1          {
-  74   2              sun_dis(DIS_ON);
-  75   2          }
-  76   1          buzzer=buzzer_bit=0;
-  77   1          
-  78   1          while(1)
+  65   2          }
+  66   1          if( power_num == 0 )  
+  67   1          {
+  68   2              EX0 = 0;
+  69   2          }else
+  70   1          {
+  71   2              EX0 = 1;
+  72   2          }
+  73   1          P20 = 0; 
+  74   1      
+  75   1          led_init();     
+  76   1          ISP_data_init();
+  77   1          percentage_dis(DIS_ON);
+  78   1          if(power_bit==1)
   79   1          {
-  80   2              button_scan();
-  81   2              fan_rotate();
-  82   2              external_24V_listen();
-  83   2              temp_listen();
-  84   2              sync_fan_delay_listen();
-  85   2              power_off();
-  86   2              if(on_off == 1)
-  87   2              {
-  88   3                  buzzer=buzzer_bit=0;
-  89   3                  P24 = P25 = P26 = 1;
-  90   3                  P43 = P44 = 1;
-  91   3                  P20 = 1;
-  92   3                  goto restart;   
-  93   3              }
-  94   2              
-  95   2          }
-  96   1      }
+  80   2              sun_dis(DIS_ON);
+  81   2          }
+  82   1          buzzer=buzzer_bit=0;
+  83   1          
+  84   1          while(1)
+  85   1          {
+  86   2              button_scan();
+  87   2              fan_rotate();
+  88   2              external_24V_listen();
+  89   2              temp_listen();
+  90   2              sync_fan_delay_listen();
+  91   2              power_off();
+  92   2              if(on_off == 1)
+  93   2              {
+  94   3                  buzzer=buzzer_bit=0;
+  95   3                  P24 = P25 = P26 = 1;
+  96   3                  P43 = P44 = 1;
+  97   3                  P20 = 1;
+  98   3                  goto restart;   
+  99   3              }
+ 100   2              
+ 101   2          }
+ 102   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    239    ----
+   CODE SIZE        =    249    ----
    CONSTANT SIZE    =     31    ----
    XDATA SIZE       =   ----       1
    PDATA SIZE       =   ----    ----

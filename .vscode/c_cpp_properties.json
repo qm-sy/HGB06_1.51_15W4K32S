@@ -3,15 +3,15 @@
         {
             "name": "Target 1",
             "includePath": [
-                "d:\\workspace\\code_test\\HGB06_1.51_15W4K32S\\Inc",
+                "d:\\workspace\\HGB06_1.51_15W4K32S\\Inc",
                 "D:\\APP\\Keil_v5\\C51\\INC",
-                "d:\\workspace\\code_test\\HGB06_1.51_15W4K32S",
-                "d:\\workspace\\code_test\\HGB06_1.51_15W4K32S\\Src",
-                "d:\\workspace\\code_test\\HGB06_1.51_15W4K32S\\User",
+                "d:\\workspace\\HGB06_1.51_15W4K32S",
+                "d:\\workspace\\HGB06_1.51_15W4K32S\\Src",
+                "d:\\workspace\\HGB06_1.51_15W4K32S\\User",
                 "${workspaceFolder}/**",
-                "d:/workspace/code_test/HGB06_1.51_15W4K32S/libRich",
-                "c:/Users/qm/.vscode/extensions/richintelligent.richextension-3.1.11/include",
-                "c:/Users/qm/.vscode/extensions/richintelligent.richextension-3.1.11/include/Atmel"
+                "d:/workspace/HGB06_1.51_15W4K32S/libRich",
+                "c:/Users/qm/.vscode/extensions/richintelligent.richextension-3.1.12/include",
+                "c:/Users/qm/.vscode/extensions/richintelligent.richextension-3.1.12/include/Atmel"
             ],
             "defines": [
                 "__C51__",
@@ -39,7 +39,7 @@
             ],
             "intelliSenseMode": "${default}",
             "forcedInclude": [
-                "c:/Users/qm/.vscode/extensions/richintelligent.richextension-3.1.11/include/libRichForced.h"
+                "c:/Users/qm/.vscode/extensions/richintelligent.richextension-3.1.12/include/libRichForced.h"
             ]
         }
     ],

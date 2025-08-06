@@ -62,8 +62,14 @@ void main()
     while(on_off)
     {
         on_off = power_on();
-    }  
-    EX0 = 1;
+    }
+    if( power_num == 0 )  
+    {
+        EX0 = 0;
+    }else
+    {
+        EX0 = 1;
+    }
     P20 = 0; 
 
     led_init();     

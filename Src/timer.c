@@ -113,7 +113,7 @@ void Tim3Isr(void) interrupt 19
     if((delay_bit1 == 1)&&(delay_bit2 == 1))
     {
         fan_delay_cnt++;
-        if(fan_delay_cnt==12000)
+        if(fan_delay_cnt==1500)
         {
             fan_delay_cnt = 0;
             delay_bit1 = 0;
@@ -212,6 +212,14 @@ void power_crl(uint8_t power_num)
     else
     {
         ET1 = 0;
+    }
+    
+    if( power_num == 0 )  
+    {
+        EX0 = 0;
+    }else
+    {
+        EX0 = 1;
     }
     
     tim1_t = power_num*39+59880;
